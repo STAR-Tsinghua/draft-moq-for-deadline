@@ -36,7 +36,7 @@ keyword:
  - unicorn
  - sparkling distributed ledger
 venue:
-  group: STAR-Tsinghua
+  github: "STAR-Tsinghua/DTP-draft"
 
 author:
 -
@@ -67,11 +67,8 @@ author:
   fullname: Wei Cao
 
 normative:
-  I-D.draft-shi-quic-dtp-07:
-  I-D.draft-shi-moq-design-space-analysis-of-moq-00:
 
 informative:
-
 
 --- abstract
 
@@ -83,7 +80,7 @@ This document defines MoQ relay's behavior to provide deliver-before-deadline tr
 
 Media over QUIC (MoQ) aims at building a system to better support real-time media transport like live streaming, online meeting, remote desktop, etc. These use cases usually require receiving their data before a certain time i.e. deadline. For example, a video conference application generally requires the end-to-end delay to be below human perception (about 100ms), to enable smooth interaction among participants. In such a system, the buffer will only hold the latest stream data and will drop the overdue data because the system will never use it.
 
-Deadline-aware actions, such as passing deadline-related information from the endpoint to the relay and deadline-aware scheduling on relay nodes will increase the timeliness of data and decrease the cost of bandwidth. These mechanisms are tested in Deadline-aware Transport Protocol ({{?I-D.draft-shi-quic-dtp-07}}) and results show that deadline-aware actions can stop sending outdated data, prioritize urgent data and prevent useless re-transmission, decrease data queuing time, and increase punctuality of data. Deadline-aware scheduling can also provide a better overall user experience while serving clients with different delay requirements. For example, a relay may simultaneously forward a simple live stream and an online meeting stream. The live stream may tolerate a 1s delay while the online meeting only accepts a 100ms delay. It may be a good idea to forward the meeting stream first.
+Deadline-aware actions, such as passing deadline-related information from the endpoint to the relay and deadline-aware scheduling on relay nodes will increase the timeliness of data and decrease the cost of bandwidth. These mechanisms are tested in Deadline-aware Transport Protocol ({{!I-D.draft-shi-quic-dtp-07}}) and results show that deadline-aware actions can stop sending outdated data, prioritize urgent data and prevent useless re-transmission, decrease data queuing time, and increase punctuality of data. Deadline-aware scheduling can also provide a better overall user experience while serving clients with different delay requirements. For example, a relay may simultaneously forward a simple live stream and an online meeting stream. The live stream may tolerate a 1s delay while the online meeting only accepts a 100ms delay. It may be a good idea to forward the meeting stream first.
 
 MoQ relays can benefit from deadline-aware actions and provide a better user experience. MoQ relays with deadline-aware actions can better schedule stream data to decrease queuing time, and prevent waste of re-transmission of overdue data to further decrease end-to-end delay. MoQ relays can also use deadline-related information to develop better data delivery strategies to increase overall user experience.
 
