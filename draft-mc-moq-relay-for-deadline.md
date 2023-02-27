@@ -9,14 +9,14 @@ number:
 date: {DATE}
 consensus: true
 v: 3
-area: transport
-workgroup: moq
+area: "Applications and Real-Time"
+workgroup: "Media Over QUIC"
 keyword:
  - next generation
  - unicorn
  - sparkling distributed ledger
 venue:
-  github: "STAR-Tsinghua/DTP-draft"
+  github: "simonkorl/draft-moq-for-deadline"
 
 author:
 -
