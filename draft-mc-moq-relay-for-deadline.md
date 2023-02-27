@@ -3,7 +3,7 @@ title: "MoQ relay for support of deadline-aware media transport"
 abbrev: "MoQ relay for deadline"
 category: info
 
-docname: draft-mc-moq-relay-for-deadline-latest
+docname: draft-ma-moq-relay-for-deadline-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date: {DATE}
@@ -13,8 +13,6 @@ area: "Applications and Real-Time"
 workgroup: "Media Over QUIC"
 keyword:
  - next generation
- - unicorn
- - sparkling distributed ledger
 venue:
   github: "simonkorl/draft-moq-for-deadline"
 
@@ -52,13 +50,13 @@ informative:
 
 --- abstract
 
-This document defines MoQ relay's behavior to provide deliver-before-deadline transport. This memo intends to introduce deadline-aware operations to the MoQ relay to decrease end-to-end latency in real-time media transmission.
+This document defines MoQ relay's behavior to provide deliver-before-deadline media transport. This memo intends to introduce deadline-aware operations to the MoQ relay to decrease end-to-end latency in real-time media transmission.
 
 --- middle
 
 # Introduction
 
-Media over QUIC (MoQ) aims at building a system to better support real-time media transport like live streaming, online meeting, remote desktop, etc. These use cases usually require receiving their data before a certain time i.e. deadline. For example, a video conference application generally requires the end-to-end delay to be below human perception (about 100ms), to enable smooth interaction among participants. In such a system, the buffer will only hold the latest stream data and will drop the overdue data because the system will never use it.
+Media over QUIC (MoQ) aims at building a system to better support real-time media transport like live streaming, online meeting, remote desktop, etc. These use cases usually require that their data is received before a certain time i.e. deadline. For example, a video conference application generally requires the end-to-end delay to be below human perception (about 100ms), to enable smooth interaction among participants. In such a system, the buffer will only hold the latest stream data and will drop the overdue data because the system will never use it.
 
 Deadline-aware actions, such as passing deadline-related information from the endpoint to the relay and deadline-aware scheduling on relay nodes will increase the timeliness of data and decrease the cost of bandwidth. These mechanisms are tested in Deadline-aware Transport Protocol ({{!I-D.draft-shi-quic-dtp-07}}) and results show that deadline-aware actions can stop sending outdated data, prioritize urgent data and prevent useless re-transmission, decrease data queuing time, and increase punctuality of data. Deadline-aware scheduling can also provide a better overall user experience while serving clients with different delay requirements. For example, a relay may simultaneously forward a simple live stream and an online meeting stream. The live stream may tolerate a 1s delay while the online meeting only accepts a 100ms delay. It may be a good idea to forward the meeting stream first.
 
@@ -100,7 +98,7 @@ Relays MAY synchronize the metadata of blocks with each other when necessary.
 
 ## Clock Synchronization
 
-To support precise deadline-aware action, all the endpoints and relays SHOULD do clock synchronization. The time bias SHOULD be less than 1 ms.
+To support precise deadline-aware action, all the endpoints and relays SHOULD do clock synchronization.
 
 # Deadline-aware Action of Relay
 
@@ -130,7 +128,7 @@ The relay may buffer some data during forwarding. These data blocks may be used 
 
 # Security Considerations
 
-The data block, metadata, and control message of the Deadlind-aware MoQ Relay should all be encrypted by QUIC's encryption method. The relays SHOULD be able to decrypt the metadata and relay-limited control message. The relays SHOULD NOT decrypt the content of the data block.
+The metadata, and control message of the Deadlind-aware MoQ Relay should only be accessed by selected relays. The relay SHOULD NOT decrypt the content of the data block.
 
 # IANA Considerations
 
