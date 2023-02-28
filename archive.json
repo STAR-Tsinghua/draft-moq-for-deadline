@@ -1,0 +1,83 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-02-28T01:21:01.329254+00:00",
+  "repo": "simonkorl/draft-moq-for-deadline",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOJC1r4M5K0kpP",
+      "title": "Simple modification.",
+      "url": "https://github.com/simonkorl/draft-moq-for-deadline/pull/1",
+      "state": "MERGED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-02-27T11:17:40Z",
+      "updatedAt": "2023-02-27T11:20:05Z",
+      "baseRepository": "simonkorl/draft-moq-for-deadline",
+      "baseRefName": "main",
+      "baseRefOid": "a3278554ac4e8af30f5b124e8a3f3eea1436f35e",
+      "headRepository": "VMatrix1900/draft-moq-for-deadline",
+      "headRefName": "patch-1",
+      "headRefOid": "7375991b5e236d4827cea79161e0bc4d8bef8ed3",
+      "closedAt": "2023-02-27T11:20:05Z",
+      "mergedAt": "2023-02-27T11:20:05Z",
+      "mergedBy": "simonkorl",
+      "mergeCommit": {
+        "oid": "ab9e4d0ab3ca439aa48cf0d67def8400ab772d37"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
