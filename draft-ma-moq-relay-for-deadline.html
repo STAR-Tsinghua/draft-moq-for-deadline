@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">MoQ relay for deadline</td>
-<td class="right">February 2023</td>
+<td class="right">March 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Cui, et al.</td>
-<td class="center">Expires 31 August 2023</td>
+<td class="center">Expires 7 September 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ma-moq-relay-for-deadline-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-02-27" class="published">27 February 2023</time>
+<time datetime="2023-03-06" class="published">6 March 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-08-31">31 August 2023</time></dd>
+<dd class="expires"><time datetime="2023-09-07">7 September 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1127,7 +1127,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 August 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1166,19 +1166,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-design-requirements" class="internal xref">Design Requirements</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-requirement-of-relay-topolo" class="internal xref">Requirement of Relay Topology</a></p>
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-support-different-relay-top" class="internal xref">Support Different Relay Topology and Architecture</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-requirement-of-moq-architec" class="internal xref">Requirement of MoQ Architecture</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-block-base-transport" class="internal xref">Block-base Transport</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-block-base-transport" class="internal xref">Block-base Transport</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-metadata" class="internal xref">Metadata</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-metadata" class="internal xref">Metadata</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-clock-synchronization" class="internal xref">Clock Synchronization</a></p>
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-clock-synchronization" class="internal xref">Clock Synchronization</a></p>
 </li>
             </ul>
 </li>
@@ -1258,56 +1255,48 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-design-requirements">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-design-requirements" class="section-name selfRef">Design Requirements</a>
       </h2>
-<div id="requirement-of-relay-topology">
+<div id="support-different-relay-topology-and-architecture">
 <section id="section-3.1">
-        <h3 id="name-requirement-of-relay-topolo">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-requirement-of-relay-topolo" class="section-name selfRef">Requirement of Relay Topology</a>
+        <h3 id="name-support-different-relay-top">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-support-different-relay-top" class="section-name selfRef">Support Different Relay Topology and Architecture</a>
         </h3>
-<p id="section-3.1-1">Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support multiple relay topologies like those mentioned in <span>[<a href="#I-D.draft-shi-moq-design-space-analysis-of-moq-00" class="cite xref">I-D.draft-shi-moq-design-space-analysis-of-moq-00</a>]</span>. The topology of the Deadline-aware MoQ Relay <span class="bcp14">SHOULD NOT</span> be specific.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="requirement-of-moq-architecture">
-<section id="section-3.2">
-        <h3 id="name-requirement-of-moq-architec">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-requirement-of-moq-architec" class="section-name selfRef">Requirement of MoQ Architecture</a>
-        </h3>
-<p id="section-3.2-1">Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support different MoQ architectures and <span class="bcp14">SHOULD</span> be able to cooperate with diverse MoQ implementations.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support different relay topologies like those mentioned in <span>[<a href="#I-D.draft-shi-moq-design-space-analysis-of-moq-00" class="cite xref">I-D.draft-shi-moq-design-space-analysis-of-moq-00</a>]</span>. For different relay topology, there may exist different architecture. The deadline-aware feature should be easily implemented as a plugin regardless of the architecture and topology.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="block-base-transport">
-<section id="section-3.3">
+<section id="section-3.2">
         <h3 id="name-block-base-transport">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-block-base-transport" class="section-name selfRef">Block-base Transport</a>
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-block-base-transport" class="section-name selfRef">Block-base Transport</a>
         </h3>
-<p id="section-3.3-1">Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support block-based transport. A block is a basic, atomic data unit in the MoQ system that can be used independently at an endpoint like a video frame. The endpoint and relay <span class="bcp14">SHOULD</span> mark the boundary of a data block in some ways and inform the relays.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support block-based transport. A block is a basic, atomic data unit in the MoQ system that can be used independently at an endpoint like a video frame. The endpoint and relay <span class="bcp14">SHOULD</span> mark the boundary of a data block in some ways and inform the relays.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="metadata">
-<section id="section-3.4">
+<section id="section-3.3">
         <h3 id="name-metadata">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-metadata" class="section-name selfRef">Metadata</a>
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-metadata" class="section-name selfRef">Metadata</a>
         </h3>
-<p id="section-3.4-1">Deadline-aware MoQ Relay needs some metadata of the data block to enable deadline-aware actions. The endpoint and relay <span class="bcp14">SHOULD</span> attach the following metadata to each data block.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">Deadline-aware MoQ Relay needs some metadata of the data block to enable deadline-aware actions. The endpoint and relay <span class="bcp14">SHOULD</span> attach the following metadata to each data block.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.4-2.1">size: the size of the data block in bytes<a href="#section-3.4-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.3-2.1">size: the size of the data block in bytes<a href="#section-3.3-2.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.4-2.2">priority: the global priority of the block in an unsigned integer<a href="#section-3.4-2.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.3-2.2">priority: the global priority of the block in an unsigned integer<a href="#section-3.3-2.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.4-2.3">deadline: the expected latency of the data. Relay is allowed to drop overdue data. Usually measured in milliseconds.<a href="#section-3.4-2.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.3-2.3">deadline: the expected latency of the data. Relay is allowed to drop overdue data. Usually measured in milliseconds.<a href="#section-3.3-2.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.4-2.4">start timestamp: the Unix timestamp when the block is created<a href="#section-3.4-2.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.3-2.4">start timestamp: the Unix timestamp when the block is created<a href="#section-3.3-2.4" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-3.4-3">Relays <span class="bcp14">SHOULD</span> keep track of the metadata of all the blocks it receives until the block misses its deadline.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.4-4">Relays <span class="bcp14">MAY</span> synchronize the metadata of blocks with each other when necessary.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">Relays <span class="bcp14">SHOULD</span> keep track of the metadata of all the blocks it receives until the block misses its deadline.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-4">Relays <span class="bcp14">MAY</span> synchronize the metadata of blocks with each other when necessary.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="clock-synchronization">
-<section id="section-3.5">
+<section id="section-3.4">
         <h3 id="name-clock-synchronization">
-<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-clock-synchronization" class="section-name selfRef">Clock Synchronization</a>
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-clock-synchronization" class="section-name selfRef">Clock Synchronization</a>
         </h3>
-<p id="section-3.5-1">To support precise deadline-aware action, all the endpoints and relays <span class="bcp14">SHOULD</span> do clock synchronization.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">To support precise deadline-aware action, all the endpoints and relays <span class="bcp14">SHOULD</span> do clock synchronization.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
