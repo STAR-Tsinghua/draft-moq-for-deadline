@@ -71,13 +71,10 @@ This document proposes Deadline-aware MoQ Relay to provide deliver-before-deadli
 
 # Design Requirements
 
-## Requirement of Relay Topology
+## Support Different Relay Topology and Architecture
 
-Deadline-aware MoQ Relay SHOULD support multiple relay topologies like those mentioned in {{?I-D.draft-shi-moq-design-space-analysis-of-moq-00}}. The topology of the Deadline-aware MoQ Relay SHOULD NOT be specific.
+Deadline-aware MoQ Relay SHOULD support different relay topologies like those mentioned in {{?I-D.draft-shi-moq-design-space-analysis-of-moq-00}}. For different relay topology, there may exist different architecture. The deadline-aware feature should be easily implemented as a plugin regardless of the architecture and topology.
 
-## Requirement of MoQ Architecture
-
-Deadline-aware MoQ Relay SHOULD support different MoQ architectures and SHOULD be able to cooperate with diverse MoQ implementations.
 
 ## Block-base Transport
 
