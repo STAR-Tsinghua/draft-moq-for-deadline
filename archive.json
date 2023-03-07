@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-03-05T01:40:40.162800+00:00",
+  "timestamp": "2023-03-07T01:36:01.620451+00:00",
   "repo": "simonkorl/draft-moq-for-deadline",
   "labels": [
     {
@@ -293,24 +293,26 @@
       "id": "PR_kwDOJC1r4M5LFiS4",
       "title": "Design requirement\u5408\u5e76\u524d\u4e24\u4e2a\u7ae0\u8282",
       "url": "https://github.com/simonkorl/draft-moq-for-deadline/pull/14",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "VMatrix1900",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-03-02T02:32:05Z",
-      "updatedAt": "2023-03-02T02:32:05Z",
+      "updatedAt": "2023-03-06T07:02:38Z",
       "baseRepository": "simonkorl/draft-moq-for-deadline",
       "baseRefName": "main",
       "baseRefOid": "a739b5465b38453df9c605c76df1fb5af174bee2",
       "headRepository": "VMatrix1900/draft-moq-for-deadline",
       "headRefName": "patch-2",
       "headRefOid": "5b56d47d3439ac4b397c37ed507a2ed3bd747d44",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-03-06T07:02:37Z",
+      "mergedAt": "2023-03-06T07:02:37Z",
+      "mergedBy": "simonkorl",
+      "mergeCommit": {
+        "oid": "79d2aa34a99c001325d51f4f1e8a7c084b2888ab"
+      },
       "comments": [],
       "reviews": []
     }
