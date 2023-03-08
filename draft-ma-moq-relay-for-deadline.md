@@ -15,7 +15,7 @@ keyword:
   - deadline
   - relay
 venue:
-  github: "simonkorl/draft-moq-for-deadline"
+  github: "STAR-Tsinghua/draft-moq-for-deadline"
 
 author:
 -
@@ -34,7 +34,7 @@ author:
   street: 30 Shuangqing Rd
   city: Beijing
   country: China
-  email: mc21@mails.tsinghua.edu.cn
+  email: simonkorl0228@gmail.com
 
 -
   ins: Y. Liao
