@@ -30,7 +30,7 @@ About This Document
    https://datatracker.ietf.org/doc/draft-ma-moq-relay-for-deadline/.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/simonkorl/draft-moq-for-deadline.
+   https://github.com/STAR-Tsinghua/draft-moq-for-deadline.
 
 Status of This Memo
 
@@ -291,7 +291,7 @@ Authors' Addresses
    30 Shuangqing Rd
    Beijing
    China
-   Email: mc21@mails.tsinghua.edu.cn
+   Email: simonkorl0228@gmail.com
 
 
    Yixin Liao
