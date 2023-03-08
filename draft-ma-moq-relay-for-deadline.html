@@ -7,13 +7,14 @@
 <title>MoQ relay for support of deadline-aware media transport</title>
 <meta content="Yong Cui" name="author">
 <meta content="Chuan Ma" name="author">
+<meta content="Yixin Liao" name="author">
 <meta content="Hang Shi" name="author">
-<meta content="Wei Cao" name="author">
 <meta content="
-       This document defines MoQ relay's behavior to provide deliver-before-deadline media transport. This memo intends to introduce deadline-aware operations to the MoQ relay to decrease end-to-end latency in real-time media transmission. 
+       This draft specifies the behavior of MoQ relays for delivering media before the deadline to decrease end-to-end latency and save transport costs in media transmission. To achieve this, the draft introduces deadline-aware actions prioritizing media streams with earlier deadlines, ensuring timely transmission while minimizing costs. 
     " name="description">
 <meta content="xml2rfc 3.16.0" name="generator">
-<meta content="next generation" name="keyword">
+<meta content="deadline" name="keyword">
+<meta content="relay" name="keyword">
 <meta content="draft-ma-moq-relay-for-deadline-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.16.0
@@ -1054,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Cui, et al.</td>
-<td class="center">Expires 7 September 2023</td>
+<td class="center">Expires 9 September 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ma-moq-relay-for-deadline-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-03-06" class="published">6 March 2023</time>
+<time datetime="2023-03-08" class="published">8 March 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-09-07">7 September 2023</time></dd>
+<dd class="expires"><time datetime="2023-09-09">9 September 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1084,11 +1085,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div class="org">Tsinghua University</div>
 </div>
 <div class="author">
-      <div class="author-name">H. Shi</div>
-<div class="org">Huawei</div>
+      <div class="author-name">Y. Liao</div>
+<div class="org">Tsinghua University</div>
 </div>
 <div class="author">
-      <div class="author-name">W. Cao</div>
+      <div class="author-name">H. Shi</div>
+<div class="org">Huawei</div>
 </div>
 </dd>
 </dl>
@@ -1096,7 +1098,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">MoQ relay for support of deadline-aware media transport</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines MoQ relay's behavior to provide deliver-before-deadline media transport. This memo intends to introduce deadline-aware operations to the MoQ relay to decrease end-to-end latency in real-time media transmission.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This draft specifies the behavior of MoQ relays for delivering media before the deadline to decrease end-to-end latency and save transport costs in media transmission. To achieve this, the draft introduces deadline-aware actions prioritizing media streams with earlier deadlines, ensuring timely transmission while minimizing costs.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1127,7 +1129,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1169,24 +1171,32 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-support-different-relay-top" class="internal xref">Support Different Relay Topology and Architecture</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-block-base-transport" class="internal xref">Block-base Transport</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-support-different-moq-trans" class="internal xref">Support different MoQ transport implementations</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-metadata" class="internal xref">Metadata</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-clock-synchronization" class="internal xref">Clock Synchronization</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-clock-synchronization" class="internal xref">Clock Synchronization</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-deadline-aware-action-of-re" class="internal xref">Deadline-aware Action of Relay</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-design" class="internal xref">Design</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-deadline-aware-scheduling-a" class="internal xref">Deadline-aware Scheduling and Cancelling</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-block-base-transport" class="internal xref">Block-base Transport</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-optional-deadline-aware-red" class="internal xref">Optional: Deadline-aware Redundancy Coding</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-metadata-for-deadline" class="internal xref">Metadata for Deadline</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-deadline-aware-action" class="internal xref">Deadline-aware Action</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1">
+                    <p id="section-toc.1-1.4.2.3.2.1.1"><a href="#section-4.3.1" class="auto internal xref">4.3.1</a>.  <a href="#name-deadline-aware-scheduling-a" class="internal xref">Deadline-aware Scheduling and Cancelling</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2">
+                    <p id="section-toc.1-1.4.2.3.2.2.1"><a href="#section-4.3.2" class="auto internal xref">4.3.2</a>.  <a href="#name-deadline-aware-redundancy-c" class="internal xref">Deadline-aware Redundancy Coding</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1233,10 +1243,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">Media over QUIC (MoQ) aims at building a system to better support real-time media transport like live streaming, online meeting, remote desktop, etc. These use cases usually require that their data is received before a certain time i.e. deadline. For example, a video conference application generally requires the end-to-end delay to be below human perception (about 100ms), to enable smooth interaction among participants. In such a system, the buffer will only hold the latest stream data and will drop the overdue data because the system will never use it.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">Deadline-aware actions, such as passing deadline-related information from the endpoint to the relay and deadline-aware scheduling on relay nodes will increase the timeliness of data and decrease the cost of bandwidth. These mechanisms are tested in Deadline-aware Transport Protocol (<span>[<a href="#I-D.draft-shi-quic-dtp-07" class="cite xref">I-D.draft-shi-quic-dtp-07</a>]</span>) and results show that deadline-aware actions can stop sending outdated data, prioritize urgent data and prevent useless re-transmission, decrease data queuing time, and increase punctuality of data. Deadline-aware scheduling can also provide a better overall user experience while serving clients with different delay requirements. For example, a relay may simultaneously forward a simple live stream and an online meeting stream. The live stream may tolerate a 1s delay while the online meeting only accepts a 100ms delay. It may be a good idea to forward the meeting stream first.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">MoQ relays can benefit from deadline-aware actions and provide a better user experience. MoQ relays with deadline-aware actions can better schedule stream data to decrease queuing time, and prevent waste of re-transmission of overdue data to further decrease end-to-end delay. MoQ relays can also use deadline-related information to develop better data delivery strategies to increase overall user experience.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">This document proposes Deadline-aware MoQ Relay to provide deliver-before-deadline transmission on MoQ relay nodes by using deadline-aware actions such as scheduling, data canceling, and redundancy coding. This relay design can act as an extension of a basic MoQ relay standard to provide better support to transmit media data in time.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-1">Media over QUIC (MoQ) is a transport system designed to provide efficient media transport. However, some use cases, such as live streaming, online meetings, and gaming, require the client to receive their media before a specific time, referred to as the 'deadline.' Exceeding the deadline results in dropped data, which can increase latency and negatively affect user experience.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">To address this issue, a deliver-before-deadline transport service can be provided, which is the goal of the Deadline-aware Transport Protocol (DTP) proposed in <span>[<a href="#I-D.draft-shi-quic-dtp-07" class="cite xref">I-D.draft-shi-quic-dtp-07</a>]</span>. DTP leverages stream-level scheduling, active stream canceling, and redundancy coding to prioritize urgent data and prevent outdated data from blocking later data.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">This document proposes the behavior of deadline-aware actions on MoQ relay nodes, extending the basic MoQ relay to provide deliver-before-deadline transmission. The relay design utilizes scheduling, data canceling, and redundancy coding to decrease queuing time, prevent unnecessary re-transmission of overdue data, and ultimately reduce end-to-end latency. By providing better data delivery strategies, MoQ relays with deadline-aware actions can significantly enhance overall user experience in media transport.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1260,69 +1269,83 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-support-different-relay-top">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-support-different-relay-top" class="section-name selfRef">Support Different Relay Topology and Architecture</a>
         </h3>
-<p id="section-3.1-1">Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support different relay topologies like those mentioned in <span>[<a href="#I-D.draft-shi-moq-design-space-analysis-of-moq-00" class="cite xref">I-D.draft-shi-moq-design-space-analysis-of-moq-00</a>]</span>. For different relay topology, there may exist different architecture. The deadline-aware feature should be easily implemented as a plugin regardless of the architecture and topology.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">Deadline-aware MoQ Relay is recommended to support various relay topologies, as discussed in <span>[<a href="#I-D.draft-shi-moq-design-space-analysis-of-moq-00" class="cite xref">I-D.draft-shi-moq-design-space-analysis-of-moq-00</a>]</span>. Each relay topology may require a different architecture. Therefore, the deadline-aware feature should be designed as a plugin that can be easily implemented regardless of the topology and architecture.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="block-base-transport">
+<div id="support-different-moq-transport-implementations">
 <section id="section-3.2">
-        <h3 id="name-block-base-transport">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-block-base-transport" class="section-name selfRef">Block-base Transport</a>
+        <h3 id="name-support-different-moq-trans">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-support-different-moq-trans" class="section-name selfRef">Support different MoQ transport implementations</a>
         </h3>
-<p id="section-3.2-1">Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support block-based transport. A block is a basic, atomic data unit in the MoQ system that can be used independently at an endpoint like a video frame. The endpoint and relay <span class="bcp14">SHOULD</span> mark the boundary of a data block in some ways and inform the relays.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="metadata">
-<section id="section-3.3">
-        <h3 id="name-metadata">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-metadata" class="section-name selfRef">Metadata</a>
-        </h3>
-<p id="section-3.3-1">Deadline-aware MoQ Relay needs some metadata of the data block to enable deadline-aware actions. The endpoint and relay <span class="bcp14">SHOULD</span> attach the following metadata to each data block.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3-2.1">size: the size of the data block in bytes<a href="#section-3.3-2.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-3.3-2.2">priority: the global priority of the block in an unsigned integer<a href="#section-3.3-2.2" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-3.3-2.3">deadline: the expected latency of the data. Relay is allowed to drop overdue data. Usually measured in milliseconds.<a href="#section-3.3-2.3" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-3.3-2.4">start timestamp: the Unix timestamp when the block is created<a href="#section-3.3-2.4" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-3.3-3">Relays <span class="bcp14">SHOULD</span> keep track of the metadata of all the blocks it receives until the block misses its deadline.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
-<p id="section-3.3-4">Relays <span class="bcp14">MAY</span> synchronize the metadata of blocks with each other when necessary.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">Depending on the MoQ implementation, the block transmission may be mapped to different mechanisms of QUIC, such as matching a block to multiple QUIC datagrams or a single QUIC stream. It is recommended that Deadline-aware MoQ Relay support various MoQ transport implementations.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="clock-synchronization">
-<section id="section-3.4">
+<section id="section-3.3">
         <h3 id="name-clock-synchronization">
-<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-clock-synchronization" class="section-name selfRef">Clock Synchronization</a>
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-clock-synchronization" class="section-name selfRef">Clock Synchronization</a>
         </h3>
-<p id="section-3.4-1">To support precise deadline-aware action, all the endpoints and relays <span class="bcp14">SHOULD</span> do clock synchronization.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">To enable accurate deadline-aware actions, it is recommended that all endpoints and relays perform clock synchronization.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
-<div id="deadline-aware-action-of-relay">
+<div id="design">
 <section id="section-4">
-      <h2 id="name-deadline-aware-action-of-re">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-deadline-aware-action-of-re" class="section-name selfRef">Deadline-aware Action of Relay</a>
+      <h2 id="name-design">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-design" class="section-name selfRef">Design</a>
       </h2>
-<div id="deadline-aware-scheduling-and-cancelling">
+<div id="block-base-transport">
 <section id="section-4.1">
-        <h3 id="name-deadline-aware-scheduling-a">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-deadline-aware-scheduling-a" class="section-name selfRef">Deadline-aware Scheduling and Cancelling</a>
+        <h3 id="name-block-base-transport">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-block-base-transport" class="section-name selfRef">Block-base Transport</a>
         </h3>
-<p id="section-4.1-1">Deadline-aware MoQ Relay can use the information of cached data, block priority, deadline, and others to make stream-level scheduling. The scheduler <span class="bcp14">SHOULD</span> try to minimize the total time of queuing and try to meet the deadline requirements of as many blocks as possible.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">In some cases where the data can be partially accepted, Deadline-aware MoQ Relay <span class="bcp14">MAY</span> cancel some blocks. The relays <span class="bcp14">MAY</span> inform the endpoints and other relays about the drop of these data blocks.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support block-based transport to enable deadline-aware actions. A block is a basic data unit in the MoQ system like a video frame. A block can be reliably delivered, partially delivered or dropped, depending on the application logic. A block <span class="bcp14">SHOULD</span> contain a block ID in the block’s header.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">When the relay receives data without deadline-related information from the endpoint, it <span class="bcp14">MAY</span> choose to convert the data into block type or forward it without utilizing any deadline-aware actions.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="optional-deadline-aware-redundancy-coding">
+<div id="metadata-for-deadline">
 <section id="section-4.2">
-        <h3 id="name-optional-deadline-aware-red">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-optional-deadline-aware-red" class="section-name selfRef">Optional: Deadline-aware Redundancy Coding</a>
+        <h3 id="name-metadata-for-deadline">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-metadata-for-deadline" class="section-name selfRef">Metadata for Deadline</a>
         </h3>
-<p id="section-4.2-1">Deadline-aware MoQ Relay <span class="bcp14">MAY</span> add redundancy data to blocks when the block is close to its deadline or the loss rate of the network increases. This helps to prevent the block from being re-transmitted and decreases latency. When the first relay encodes the data with redundancy coding, the following nodes may benefit from it.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">If redundancy coding is enabled, every relay node <span class="bcp14">SHOULD</span> implement an encoder and decoder according to the redundancy coding method. The endpoint <span class="bcp14">MAY</span> implement the redundancy encoder and decoder to fully utilize the relay's redundancy coding function.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.2-3">The first relay node that encodes the data <span class="bcp14">SHOULD</span> add redundancy-related information in the metadata of the data block. The last relay before the receiver endpoint should decode the data and forward it to the endpoint unless the endpoint can decode the data itself.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">For Deadline-aware MoQ Relay, data block metadata is required to enable deadline-aware actions. Both the endpoint and the relay <span class="bcp14">SHOULD</span> attach the following metadata to each data block when using deadline-aware actions:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.2-2.1">size: the size of the data block in bytes<a href="#section-4.2-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.2-2.2">priority: the block's relative priority in a single session<a href="#section-4.2-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.2-2.3">deadline: the expected completion timestamp of the block. The relay can drop overdue data.<a href="#section-4.2-2.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-4.2-3">The relay <span class="bcp14">SHOULD</span> maintain track of the metadata of a block until the block misses its deadline.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">Additionally, if the endpoint does not offer metadata in the header of a data block, relays <span class="bcp14">MAY</span> implement other mechanisms to acquire and synchronize deadline-related metadata.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="deadline-aware-action">
+<section id="section-4.3">
+        <h3 id="name-deadline-aware-action">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-deadline-aware-action" class="section-name selfRef">Deadline-aware Action</a>
+        </h3>
+<div id="deadline-aware-scheduling-and-cancelling">
+<section id="section-4.3.1">
+          <h4 id="name-deadline-aware-scheduling-a">
+<a href="#section-4.3.1" class="section-number selfRef">4.3.1. </a><a href="#name-deadline-aware-scheduling-a" class="section-name selfRef">Deadline-aware Scheduling and Cancelling</a>
+          </h4>
+<p id="section-4.3.1-1">When implementing deadline-aware actions, the Deadline-aware MoQ Relay can utilize the block metadata for scheduling blocks at the block-level. The scheduler <span class="bcp14">SHOULD</span> minimize the total time of queuing and try to meet the deadline requirements of as many high-priority blocks as possible.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.1-2">If a block misses its deadline, Deadline-aware MoQ Relay <span class="bcp14">MAY</span> cancel it. In such cases, the endpoints <span class="bcp14">SHOULD</span> be able to accept partially received data and not request for data re-transmission when a block is dropped. Additionally, the relays <span class="bcp14">MAY</span> inform the endpoints and other relays about the cancellation of these blocks.<a href="#section-4.3.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="deadline-aware-redundancy-coding">
+<section id="section-4.3.2">
+          <h4 id="name-deadline-aware-redundancy-c">
+<a href="#section-4.3.2" class="section-number selfRef">4.3.2. </a><a href="#name-deadline-aware-redundancy-c" class="section-name selfRef">Deadline-aware Redundancy Coding</a>
+          </h4>
+<p id="section-4.3.2-1">To improve reliability and decrease latency, Deadline-aware MoQ Relay <span class="bcp14">MAY</span> introduce redundancy data to blocks close to their deadline or transmitted over a network with a high loss rate. This redundancy can help to prevent the need for re-transmission. If the first relay adds redundancy coding to the data, other relay nodes in the network may benefit from it.<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.2-2">When redundancy coding is enabled, at least two nodes <span class="bcp14">SHOULD</span> implement a pair of encoder and decoder that comply with the redundancy coding method. The endpoint <span class="bcp14">MAY</span> also implement a redundancy encoder and decoder to utilize the relay's redundancy coding function fully.<a href="#section-4.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.3.2-3">The first node that encodes the data with redundancy coding <span class="bcp14">MUST</span> add redundancy-related information to the metadata of the data block.<a href="#section-4.3.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -1337,7 +1360,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-drop-notification">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-drop-notification" class="section-name selfRef">Drop Notification</a>
         </h3>
-<p id="section-5.1-1">When a relay drops a data block due to missing of deadline or other reasons, it might be useful to send an explicit dropping message to other relays and the endpoint to inform them about an active loss of data.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">In situations where a data block is dropped by a relay due to a missed deadline or other reasons, sending an explicit dropping message to other relays and the endpoint can be useful to notify them of the loss of data. The dropping message may include information about the block, such as its ID and metadata.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="data-buffer">
@@ -1345,7 +1368,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-data-buffer">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-data-buffer" class="section-name selfRef">Data Buffer</a>
         </h3>
-<p id="section-5.2-1">The relay may buffer some data during forwarding. These data blocks may be used for re-transmission, serving users with larger delay tolerance and other usages. However, whether and how should we implement such a buffer still need further discussion.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">Further discussion is required to determine if the relay should implement a buffer for data blocks during forwarding and how such a buffer should be implemented. This buffer may be used for re-transmission purposes and may benefit users with larger delay tolerance, among other potential uses.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1355,7 +1378,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-security-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">The metadata, and control message of the Deadlind-aware MoQ Relay should only be accessed by selected relays. The relay <span class="bcp14">SHOULD NOT</span> decrypt the content of the data block.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">Access to the metadata of the Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> be limited to selected relays. The relay <span class="bcp14">SHOULD NOT</span> access the content of the data block.<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1406,7 +1429,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">We sincerely thank Wei Cao for his advice and revisions to this draft.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
@@ -1437,15 +1460,19 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 </div>
 </address>
 <address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Yixin Liao</span></div>
+<div dir="auto" class="left"><span class="org">Tsinghua University</span></div>
+<div dir="auto" class="left"><span class="street-address">30 Shuangqing Rd</span></div>
+<div dir="auto" class="left"><span class="locality">Beijing</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+</address>
+<address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Hang Shi</span></div>
 <div dir="auto" class="left"><span class="org">Huawei</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:shihang9@huawei.com" class="email">shihang9@huawei.com</a>
 </div>
-</address>
-<address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Wei Cao</span></div>
 </address>
 </section>
 </div>
