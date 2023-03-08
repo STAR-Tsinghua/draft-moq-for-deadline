@@ -12,7 +12,8 @@ v: 3
 area: "Applications and Real-Time"
 workgroup: "Media Over QUIC"
 keyword:
- - next generation
+  - deadline
+  - relay
 venue:
   github: "simonkorl/draft-moq-for-deadline"
 
@@ -36,13 +37,18 @@ author:
   email: mc21@mails.tsinghua.edu.cn
 
 -
+  ins: Y. Liao
+  fullname: Yixin Liao
+  org: Tsinghua University
+  street: 30 Shuangqing Rd
+  city: Beijing
+  country: China
+
+-
   ins: H. Shi
   fullname: Hang Shi
   org: Huawei
   email: shihang9@huawei.com
-
-- ins: W. Cao
-  fullname: Wei Cao
 
 normative:
 
@@ -50,20 +56,17 @@ informative:
 
 --- abstract
 
-This document defines MoQ relay's behavior to provide deliver-before-deadline media transport. This memo intends to introduce deadline-aware operations to the MoQ relay to decrease end-to-end latency in real-time media transmission.
+This draft specifies the behavior of MoQ relays for delivering media before the deadline to decrease end-to-end latency and save transport costs in media transmission. To achieve this, the draft introduces deadline-aware actions prioritizing media streams with earlier deadlines, ensuring timely transmission while minimizing costs.
 
 --- middle
 
 # Introduction
 
-Media over QUIC (MoQ) aims at building a system to better support real-time media transport like live streaming, online meeting, remote desktop, etc. These use cases usually require that their data is received before a certain time i.e. deadline. For example, a video conference application generally requires the end-to-end delay to be below human perception (about 100ms), to enable smooth interaction among participants. In such a system, the buffer will only hold the latest stream data and will drop the overdue data because the system will never use it.
+Media over QUIC (MoQ) is a transport system designed to provide efficient media transport. However, some use cases, such as live streaming, online meetings, and gaming, require the client to receive their media before a specific time, referred to as the 'deadline.' Exceeding the deadline results in dropped data, which can increase latency and negatively affect user experience.
 
-Deadline-aware actions, such as passing deadline-related information from the endpoint to the relay and deadline-aware scheduling on relay nodes will increase the timeliness of data and decrease the cost of bandwidth. These mechanisms are tested in Deadline-aware Transport Protocol ({{!I-D.draft-shi-quic-dtp-07}}) and results show that deadline-aware actions can stop sending outdated data, prioritize urgent data and prevent useless re-transmission, decrease data queuing time, and increase punctuality of data. Deadline-aware scheduling can also provide a better overall user experience while serving clients with different delay requirements. For example, a relay may simultaneously forward a simple live stream and an online meeting stream. The live stream may tolerate a 1s delay while the online meeting only accepts a 100ms delay. It may be a good idea to forward the meeting stream first.
+To address this issue, a deliver-before-deadline transport service can be provided, which is the goal of the Deadline-aware Transport Protocol (DTP) proposed in {{!I-D.draft-shi-quic-dtp-07}}. DTP leverages stream-level scheduling, active stream canceling, and redundancy coding to prioritize urgent data and prevent outdated data from blocking later data.
 
-MoQ relays can benefit from deadline-aware actions and provide a better user experience. MoQ relays with deadline-aware actions can better schedule stream data to decrease queuing time, and prevent waste of re-transmission of overdue data to further decrease end-to-end delay. MoQ relays can also use deadline-related information to develop better data delivery strategies to increase overall user experience.
-
-This document proposes Deadline-aware MoQ Relay to provide deliver-before-deadline transmission on MoQ relay nodes by using deadline-aware actions such as scheduling, data canceling, and redundancy coding. This relay design can act as an extension of a basic MoQ relay standard to provide better support to transmit media data in time.
-
+This document proposes the behavior of deadline-aware actions on MoQ relay nodes, extending the basic MoQ relay to provide deliver-before-deadline transmission. The relay design utilizes scheduling, data canceling, and redundancy coding to decrease queuing time, prevent unnecessary re-transmission of overdue data, and ultimately reduce end-to-end latency. By providing better data delivery strategies, MoQ relays with deadline-aware actions can significantly enhance overall user experience in media transport.
 
 # Conventions and Definitions
 
@@ -73,59 +76,65 @@ This document proposes Deadline-aware MoQ Relay to provide deliver-before-deadli
 
 ## Support Different Relay Topology and Architecture
 
-Deadline-aware MoQ Relay SHOULD support different relay topologies like those mentioned in {{?I-D.draft-shi-moq-design-space-analysis-of-moq-00}}. For different relay topology, there may exist different architecture. The deadline-aware feature should be easily implemented as a plugin regardless of the architecture and topology.
+Deadline-aware MoQ Relay is recommended to support various relay topologies, as discussed in {{?I-D.draft-shi-moq-design-space-analysis-of-moq-00}}. Each relay topology may require a different architecture. Therefore, the deadline-aware feature should be designed as a plugin that can be easily implemented regardless of the topology and architecture.
 
+## Support different MoQ transport implementations
 
-## Block-base Transport
-
-Deadline-aware MoQ Relay SHOULD support block-based transport. A block is a basic, atomic data unit in the MoQ system that can be used independently at an endpoint like a video frame. The endpoint and relay SHOULD mark the boundary of a data block in some ways and inform the relays.
-
-## Metadata
-
-Deadline-aware MoQ Relay needs some metadata of the data block to enable deadline-aware actions. The endpoint and relay SHOULD attach the following metadata to each data block.
-
-- size: the size of the data block in bytes
-- priority: the global priority of the block in an unsigned integer
-- deadline: the expected latency of the data. Relay is allowed to drop overdue data. Usually measured in milliseconds.
-- start timestamp: the Unix timestamp when the block is created
-
-Relays SHOULD keep track of the metadata of all the blocks it receives until the block misses its deadline.
-
-Relays MAY synchronize the metadata of blocks with each other when necessary.
+Depending on the MoQ implementation, the block transmission may be mapped to different mechanisms of QUIC, such as matching a block to multiple QUIC datagrams or a single QUIC stream. It is recommended that Deadline-aware MoQ Relay support various MoQ transport implementations.
 
 ## Clock Synchronization
 
-To support precise deadline-aware action, all the endpoints and relays SHOULD do clock synchronization.
+To enable accurate deadline-aware actions, it is recommended that all endpoints and relays perform clock synchronization.
 
-# Deadline-aware Action of Relay
+# Design
 
-## Deadline-aware Scheduling and Cancelling
+## Block-base Transport
 
-Deadline-aware MoQ Relay can use the information of cached data, block priority, deadline, and others to make stream-level scheduling. The scheduler SHOULD try to minimize the total time of queuing and try to meet the deadline requirements of as many blocks as possible.
+Deadline-aware MoQ Relay SHOULD support block-based transport to enable deadline-aware actions. A block is a basic data unit in the MoQ system like a video frame. A block can be reliably delivered, partially delivered or dropped, depending on the application logic. A block SHOULD contain a block ID in the block’s header.
 
-In some cases where the data can be partially accepted, Deadline-aware MoQ Relay MAY cancel some blocks. The relays MAY inform the endpoints and other relays about the drop of these data blocks.
+When the relay receives data without deadline-related information from the endpoint, it MAY choose to convert the data into block type or forward it without utilizing any deadline-aware actions.
 
-## Optional: Deadline-aware Redundancy Coding
+## Metadata for Deadline
 
-Deadline-aware MoQ Relay MAY add redundancy data to blocks when the block is close to its deadline or the loss rate of the network increases. This helps to prevent the block from being re-transmitted and decreases latency. When the first relay encodes the data with redundancy coding, the following nodes may benefit from it.
+For Deadline-aware MoQ Relay, data block metadata is required to enable deadline-aware actions. Both the endpoint and the relay SHOULD attach the following metadata to each data block when using deadline-aware actions:
 
-If redundancy coding is enabled, every relay node SHOULD implement an encoder and decoder according to the redundancy coding method. The endpoint MAY implement the redundancy encoder and decoder to fully utilize the relay's redundancy coding function.
+- size: the size of the data block in bytes
+- priority: the block's relative priority in a single session
+- deadline: the expected completion timestamp of the block. The relay can drop overdue data.
 
-The first relay node that encodes the data SHOULD add redundancy-related information in the metadata of the data block. The last relay before the receiver endpoint should decode the data and forward it to the endpoint unless the endpoint can decode the data itself.
+The relay SHOULD maintain track of the metadata of a block until the block misses its deadline.
+
+Additionally, if the endpoint does not offer metadata in the header of a data block, relays MAY implement other mechanisms to acquire and synchronize deadline-related metadata.
+
+## Deadline-aware Action
+
+### Deadline-aware Scheduling and Cancelling
+
+When implementing deadline-aware actions, the Deadline-aware MoQ Relay can utilize the block metadata for scheduling blocks at the block-level. The scheduler SHOULD minimize the total time of queuing and try to meet the deadline requirements of as many high-priority blocks as possible.
+
+If a block misses its deadline, Deadline-aware MoQ Relay MAY cancel it. In such cases, the endpoints SHOULD be able to accept partially received data and not request for data re-transmission when a block is dropped. Additionally, the relays MAY inform the endpoints and other relays about the cancellation of these blocks.
+
+### Deadline-aware Redundancy Coding
+
+To improve reliability and decrease latency, Deadline-aware MoQ Relay MAY introduce redundancy data to blocks close to their deadline or transmitted over a network with a high loss rate. This redundancy can help to prevent the need for re-transmission. If the first relay adds redundancy coding to the data, other relay nodes in the network may benefit from it.
+
+When redundancy coding is enabled, at least two nodes SHOULD implement a pair of encoder and decoder that comply with the redundancy coding method. The endpoint MAY also implement a redundancy encoder and decoder to utilize the relay's redundancy coding function fully.
+
+The first node that encodes the data with redundancy coding MUST add redundancy-related information to the metadata of the data block.
 
 # Other Design Considerations
 
 ## Drop Notification
 
-When a relay drops a data block due to missing of deadline or other reasons, it might be useful to send an explicit dropping message to other relays and the endpoint to inform them about an active loss of data.
+In situations where a data block is dropped by a relay due to a missed deadline or other reasons, sending an explicit dropping message to other relays and the endpoint can be useful to notify them of the loss of data. The dropping message may include information about the block, such as its ID and metadata.
 
 ## Data Buffer
 
-The relay may buffer some data during forwarding. These data blocks may be used for re-transmission, serving users with larger delay tolerance and other usages. However, whether and how should we implement such a buffer still need further discussion.
+Further discussion is required to determine if the relay should implement a buffer for data blocks during forwarding and how such a buffer should be implemented. This buffer may be used for re-transmission purposes and may benefit users with larger delay tolerance, among other potential uses.
 
 # Security Considerations
 
-The metadata, and control message of the Deadlind-aware MoQ Relay should only be accessed by selected relays. The relay SHOULD NOT decrypt the content of the data block.
+Access to the metadata of the Deadline-aware MoQ Relay SHOULD be limited to selected relays. The relay SHOULD NOT access the content of the data block.
 
 # IANA Considerations
 
@@ -137,4 +146,4 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+We sincerely thank Wei Cao for his advice and revisions to this draft.
