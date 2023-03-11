@@ -1,7 +1,7 @@
 ---
 title: "MoQ relay for support of deadline-aware media transport"
 abbrev: "MoQ relay for deadline"
-category: info
+category: std
 
 docname: draft-ma-moq-relay-for-deadline-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
@@ -72,29 +72,51 @@ This document proposes the behavior of deadline-aware actions on MoQ relay nodes
 
 {::boilerplate bcp14-tagged}
 
-# Design Requirements
+# Overview of Deadline-aware MoQ Architecture
 
-## Support Different Relay Topology and Architecture
+~~~~~~
+                      +===========================+
+                      :             /-------\     :
+                      :    Deadline |Block 1|     :
+                      :     -aware  |DDL:xxx|     :
+                      :   Canceling \-------/     :
+            /-------\ :                 ^         :
+            |DDL:xxx| :                 :         :
+            | Data  | :    +---------+  :         :
++---------+ \-------/ :    |Deadline |  :         :
+|Publisher|-----------:--->| -aware  |==:         :
++---------+ /-------\ :    |  Relay  |            :
+            |DDL:yyy| :    +---------+            :
+            | Data  | :         |  /-----------\  :
+            \-------/ :         |  | Block 2   |  :
+                      :         |  | DDL:yyy   |  :
+                      :         |  |-----------|  :
+                      :         |  | Redundancy|  :
+                      :         |  | Coding    |  :
+                      :         v  \-----------/  :
+                      :    +---------+            :
+                      :    |Deadline |            :    +----------+
+                      :    | -aware  |------------:--->|Subscriber|
+                      :    |  Relay  |   /-------\:    +----------+
+                      :    +---------+   |DDL:yyy|:
+                      :                  | Data  |:
+                      :                  \-------/:
+                      +===========================+
+                      Deadline-aware MoQ Relay nodes
+~~~~~~
+{: #arch title="The Architecture of Deadline-aware MoQ"}
 
-Deadline-aware MoQ Relay is recommended to support various relay topologies, as discussed in {{?I-D.draft-shi-moq-design-space-analysis-of-moq-00}}. Each relay topology may require a different architecture. Therefore, the deadline-aware feature should be designed as a plugin that can be easily implemented regardless of the topology and architecture.
+{{arch}} illustrates the fundamental architecture of Deadline-aware MoQ. This architecture involves the extension of MoQ Publishers and Subscribers, with the 'Deadline' added as a component of Metadata within the header of transmitted data. Relay nodes within this system are equipped with Deadline-aware actions, including deadline-aware scheduling, canceling and redundancy coding. Deadline-aware MoQ Relays transfer block-like data between one another, and they are capable of reconstructing this data to its original form, as it was received by the first relay.
 
-## Support different MoQ transport implementations
+The main focus of this draft is the extension of MoQ relays or the 'Deadline-aware MoQ Relay'. The Deadline-aware MoQ Relay SHOULD support block-based transport to enable deadline-aware actions. A block is a basic data unit in the MoQ system like a video frame. A block can be reliably delivered, partially delivered or dropped, depending on the application logic. A block SHOULD contain a block ID in the block’s header.
 
-Depending on the MoQ implementation, the block transmission may be mapped to different mechanisms of QUIC, such as matching a block to multiple QUIC datagrams or a single QUIC stream. It is recommended that Deadline-aware MoQ Relay support various MoQ transport implementations.
+Depending on the MoQ implementation, the block transmission may be mapped to different mechanisms of QUIC, such as matching a block to multiple QUIC datagrams or a single QUIC stream. Deadline-aware MoQ Relay SHOULD support various MoQ transport implementations. When the relay receives data without deadline-related information from the endpoint, it MAY choose to convert the data into block type or forward it without utilizing any deadline-aware actions.
 
-## Clock Synchronization
+The Deadline-aware MoQ Relay SHOULD support various relay topologies, as discussed in {{?I-D.draft-shi-moq-design-space-analysis-of-moq-00}}. Each relay topology may require a different MoQ architecture or implementation. Therefore, the deadline-aware actions are designed as a plugin that can be easily implemented regardless of the topology and architecture.
 
-To enable accurate deadline-aware actions, it is recommended that all endpoints and relays perform clock synchronization.
+# Deadline-aware Extension of MoQ
 
-# Design
-
-## Block-base Transport
-
-Deadline-aware MoQ Relay SHOULD support block-based transport to enable deadline-aware actions. A block is a basic data unit in the MoQ system like a video frame. A block can be reliably delivered, partially delivered or dropped, depending on the application logic. A block SHOULD contain a block ID in the block’s header.
-
-When the relay receives data without deadline-related information from the endpoint, it MAY choose to convert the data into block type or forward it without utilizing any deadline-aware actions.
-
-## Metadata for Deadline
+## Metadata for Deadline-aware Actions
 
 For Deadline-aware MoQ Relay, data block metadata is required to enable deadline-aware actions. Both the endpoint and the relay SHOULD attach the following metadata to each data block when using deadline-aware actions:
 
@@ -105,6 +127,8 @@ For Deadline-aware MoQ Relay, data block metadata is required to enable deadline
 The relay SHOULD maintain track of the metadata of a block until the block misses its deadline.
 
 Additionally, if the endpoint does not offer metadata in the header of a data block, relays MAY implement other mechanisms to acquire and synchronize deadline-related metadata.
+
+e.x. The specific methodology for encapsulating metadata needs to wait until the MoQ specification is standardized.
 
 ## Deadline-aware Action
 
@@ -122,7 +146,7 @@ When redundancy coding is enabled, at least two nodes SHOULD implement a pair of
 
 The first node that encodes the data with redundancy coding MUST add redundancy-related information to the metadata of the data block.
 
-# Other Design Considerations
+# Design Considerations
 
 ## Drop Notification
 
@@ -131,6 +155,10 @@ In situations where a data block is dropped by a relay due to a missed deadline 
 ## Data Buffer
 
 Further discussion is required to determine if the relay should implement a buffer for data blocks during forwarding and how such a buffer should be implemented. This buffer may be used for re-transmission purposes and may benefit users with larger delay tolerance, among other potential uses.
+
+## Clock Synchronization
+
+To enable accurate deadline-aware actions, it is recommended that all endpoints and relays perform clock synchronization.
 
 # Security Considerations
 
