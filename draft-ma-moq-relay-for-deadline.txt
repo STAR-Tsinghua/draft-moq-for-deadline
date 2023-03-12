@@ -69,11 +69,11 @@ Table of Contents
    2.  Conventions and Definitions
    3.  Overview of Deadline-aware MoQ Architecture
    4.  Deadline-aware Extension of MoQ
-     4.1.  Metadata for Deadline-aware Actions
+     4.1.  Metadata for Deadline
      4.2.  Deadline-aware Action
        4.2.1.  Deadline-aware Scheduling and Cancelling
        4.2.2.  Deadline-aware Redundancy Coding
-   5.  Design Considerations
+   5.  Discussions
      5.1.  Drop Notification
      5.2.  Data Buffer
      5.3.  Clock Synchronization
@@ -153,7 +153,7 @@ Table of Contents
 
    Figure 1 illustrates the fundamental architecture of Deadline-aware
    MoQ.  This architecture involves the extension of MoQ Publishers and
-   Subscribers, which send block-like data and add 'Deadline' as a
+   Subscribers, which transport block-like data and add 'Deadline' as a
    component of Metadata within the header.  Relay nodes within this
    system are equipped with deadline-aware actions, including deadline-
    aware scheduling, canceling, and redundancy coding.  The relay may
@@ -188,7 +188,7 @@ Table of Contents
 
 4.  Deadline-aware Extension of MoQ
 
-4.1.  Metadata for Deadline-aware Actions
+4.1.  Metadata for Deadline
 
    For Deadline-aware MoQ Relay, data block metadata is required to
    enable deadline-aware actions.  Both the endpoint and the relay
@@ -246,7 +246,7 @@ Table of Contents
    The first node that encodes the data with redundancy coding MUST add
    redundancy-related information to the metadata of the data block.
 
-5.  Design Considerations
+5.  Discussions
 
 5.1.  Drop Notification
 
@@ -336,6 +336,7 @@ Authors' Addresses
    30 Shuangqing Rd
    Beijing
    China
+   Email: lyxceasar@outlook.com
 
 
    Hang Shi
