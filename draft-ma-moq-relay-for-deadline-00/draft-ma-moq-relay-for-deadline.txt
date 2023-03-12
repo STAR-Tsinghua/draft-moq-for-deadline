@@ -4,11 +4,11 @@
 
 Media Over QUIC                                                   Y. Cui
 Internet-Draft                                                     C. Ma
-Intended status: Informational                                   Y. Liao
-Expires: 9 September 2023                            Tsinghua University
+Intended status: Standards Track                                 Y. Liao
+Expires: 13 September 2023                           Tsinghua University
                                                                   H. Shi
                                                                   Huawei
-                                                            8 March 2023
+                                                           12 March 2023
 
 
         MoQ relay for support of deadline-aware media transport
@@ -47,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 September 2023.
+   This Internet-Draft will expire on 13 September 2023.
 
 Copyright Notice
 
@@ -67,19 +67,16 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Design Requirements
-     3.1.  Support Different Relay Topology and Architecture
-     3.2.  Support different MoQ transport implementations
-     3.3.  Clock Synchronization
-   4.  Design
-     4.1.  Block-base Transport
-     4.2.  Metadata for Deadline
-     4.3.  Deadline-aware Action
-       4.3.1.  Deadline-aware Scheduling and Cancelling
-       4.3.2.  Deadline-aware Redundancy Coding
-   5.  Other Design Considerations
+   3.  Overview of Deadline-aware MoQ Architecture
+   4.  Deadline-aware Extension of MoQ
+     4.1.  Metadata for Deadline
+     4.2.  Deadline-aware Action
+       4.2.1.  Deadline-aware Scheduling and Cancelling
+       4.2.2.  Deadline-aware Redundancy Coding
+   5.  Discussions
      5.1.  Drop Notification
      5.2.  Data Buffer
+     5.3.  Clock Synchronization
    6.  Security Considerations
    7.  IANA Considerations
    8.  References
@@ -99,10 +96,10 @@ Table of Contents
 
    To address this issue, a deliver-before-deadline transport service
    can be provided, which is the goal of the Deadline-aware Transport
-   Protocol (DTP) proposed in [I-D.draft-shi-quic-dtp-07].  DTP
-   leverages stream-level scheduling, active stream canceling, and
-   redundancy coding to prioritize urgent data and prevent outdated data
-   from blocking later data.
+   Protocol (DTP) proposed in [I-D.draft-shi-quic-dtp].  DTP leverages
+   stream-level scheduling, active stream canceling, and redundancy
+   coding to prioritize urgent data and prevent outdated data from
+   blocking later data.
 
    This document proposes the behavior of deadline-aware actions on MoQ
    relay nodes, extending the basic MoQ relay to provide deliver-before-
@@ -121,45 +118,77 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  Design Requirements
+3.  Overview of Deadline-aware MoQ Architecture
 
-3.1.  Support Different Relay Topology and Architecture
+                         +===========================+
+                         :             /=======\     :
+                         :    Deadline :Block 1:     :
+                         :     -aware  :DDL:xxx:     :
+                         :   Canceling \=======/     :
+               /-------\ :                 ^         :
+               |Block 1| :                 :         :
+               |DDL:xxx| :    +---------+  :         :
+   +---------+ \-------/ :    |Deadline |  :         :
+   |Publisher|-----------:--->| -aware  |==:         :
+   +---------+ /-------\ :    |  Relay  |            :
+               |Block 2| :    +---------+            :
+               |DDL:yyy| :         |  /-----------\  :
+               \-------/ :         |  | Block 2   |  :
+                         :         |  | DDL:yyy   |  :
+                         :         |  |-----------|  :
+                         :         |  | Redundancy|  :
+                         :         |  | Coding    |  :
+                         :         v  \-----------/  :
+                         :    +---------+            :
+                         :    |Deadline |            :    +----------+
+                         :    | -aware  |------------:--->|Subscriber|
+                         :    |  Relay  |   /-------\:    +----------+
+                         :    +---------+   |Block 2|:
+                         :                  |DDL:yyy|:
+                         :                  \-------/:
+                         +===========================+
+                         Deadline-aware MoQ Relay nodes
 
-   Deadline-aware MoQ Relay is recommended to support various relay
-   topologies, as discussed in
-   [I-D.draft-shi-moq-design-space-analysis-of-moq-00].  Each relay
-   topology may require a different architecture.  Therefore, the
-   deadline-aware feature should be designed as a plugin that can be
-   easily implemented regardless of the topology and architecture.
+              Figure 1: The Architecture of Deadline-aware MoQ
 
-3.2.  Support different MoQ transport implementations
+   Figure 1 illustrates the fundamental architecture of Deadline-aware
+   MoQ.  This architecture involves the extension of MoQ Publishers and
+   Subscribers, which transport block-like data and add 'Deadline' as a
+   component of Metadata within the header.  Relay nodes within this
+   system are equipped with deadline-aware actions, including deadline-
+   aware scheduling, canceling, and redundancy coding.  The relay may
+   schedule the data blocks, cancel the overdue ones, and add redundancy
+   code to avoid re-transmission.  The relays receive block-like data
+   from the publisher, transfer between relays, make deadline-aware
+   actions, and transmit it to the subscriber.
 
-   Depending on the MoQ implementation, the block transmission may be
-   mapped to different mechanisms of QUIC, such as matching a block to
-   multiple QUIC datagrams or a single QUIC stream.  It is recommended
-   that Deadline-aware MoQ Relay support various MoQ transport
-   implementations.
+   The main focus of this draft is the extension of MoQ relays or the
+   'Deadline-aware MoQ Relay.'  The Deadline-aware MoQ Relay SHOULD send
+   data in a block-like style to enable deadline-aware actions.  A block
+   is a data unit in the MoQ system, like a video frame.  A block can be
+   reliably delivered, partially delivered, or dropped depending on the
+   application logic.  A block SHOULD contain a block ID in the block's
+   header.
 
-3.3.  Clock Synchronization
+   Depending on the MoQ implementation, the relay implementation may map
+   the block transmission to different mechanisms of QUIC, such as
+   matching a block to multiple QUIC datagrams or a single QUIC stream.
+   Deadline-aware MoQ Relay SHOULD support various MoQ transport
+   implementations.  When the relay receives data without deadline-
+   related information from the endpoint, it MAY convert the data into
+   block type or forward it without utilizing any deadline-aware
+   actions.
 
-   To enable accurate deadline-aware actions, it is recommended that all
-   endpoints and relays perform clock synchronization.
+   The Deadline-aware MoQ Relay SHOULD support various relay topologies,
+   as discussed in [I-D.draft-shi-moq-design-space-analysis-of-moq].
+   Each relay topology may require a different MoQ architecture or
+   implementation.  Therefore, the deadline-aware actions should act as
+   a plugin that relays can quickly implement regardless of the topology
+   and architecture.
 
-4.  Design
+4.  Deadline-aware Extension of MoQ
 
-4.1.  Block-base Transport
-
-   Deadline-aware MoQ Relay SHOULD support block-based transport to
-   enable deadline-aware actions.  A block is a basic data unit in the
-   MoQ system like a video frame.  A block can be reliably delivered,
-   partially delivered or dropped, depending on the application logic.
-   A block SHOULD contain a block ID in the block’s header.
-
-   When the relay receives data without deadline-related information
-   from the endpoint, it MAY choose to convert the data into block type
-   or forward it without utilizing any deadline-aware actions.
-
-4.2.  Metadata for Deadline
+4.1.  Metadata for Deadline
 
    For Deadline-aware MoQ Relay, data block metadata is required to
    enable deadline-aware actions.  Both the endpoint and the relay
@@ -180,9 +209,12 @@ Table of Contents
    of a data block, relays MAY implement other mechanisms to acquire and
    synchronize deadline-related metadata.
 
-4.3.  Deadline-aware Action
+   e.x.  The specific methodology for encapsulating metadata needs to
+   wait until the MoQ specification is standardized.
 
-4.3.1.  Deadline-aware Scheduling and Cancelling
+4.2.  Deadline-aware Action
+
+4.2.1.  Deadline-aware Scheduling and Cancelling
 
    When implementing deadline-aware actions, the Deadline-aware MoQ
    Relay can utilize the block metadata for scheduling blocks at the
@@ -196,7 +228,7 @@ Table of Contents
    is dropped.  Additionally, the relays MAY inform the endpoints and
    other relays about the cancellation of these blocks.
 
-4.3.2.  Deadline-aware Redundancy Coding
+4.2.2.  Deadline-aware Redundancy Coding
 
    To improve reliability and decrease latency, Deadline-aware MoQ Relay
    MAY introduce redundancy data to blocks close to their deadline or
@@ -214,7 +246,7 @@ Table of Contents
    The first node that encodes the data with redundancy coding MUST add
    redundancy-related information to the metadata of the data block.
 
-5.  Other Design Considerations
+5.  Discussions
 
 5.1.  Drop Notification
 
@@ -232,6 +264,11 @@ Table of Contents
    transmission purposes and may benefit users with larger delay
    tolerance, among other potential uses.
 
+5.3.  Clock Synchronization
+
+   To enable accurate deadline-aware actions, it is recommended that all
+   endpoints and relays perform clock synchronization.
+
 6.  Security Considerations
 
    Access to the metadata of the Deadline-aware MoQ Relay SHOULD be
@@ -246,7 +283,7 @@ Table of Contents
 
 8.1.  Normative References
 
-   [I-D.draft-shi-quic-dtp-07]
+   [I-D.draft-shi-quic-dtp]
               Cui, Y., Ma, C., Shi, H., Zheng, K., and W. Wang,
               "Deadline-aware Transport Protocol", Work in Progress,
               Internet-Draft, draft-shi-quic-dtp-07, 26 January 2023,
@@ -264,7 +301,7 @@ Table of Contents
 
 8.2.  Informative References
 
-   [I-D.draft-shi-moq-design-space-analysis-of-moq-00]
+   [I-D.draft-shi-moq-design-space-analysis-of-moq]
               Shi, H. and Y. Cui, "Design Space Analysis of MoQ", Work
               in Progress, Internet-Draft, draft-shi-moq-design-space-
               analysis-of-moq-00, 21 October 2022,
@@ -299,6 +336,7 @@ Authors' Addresses
    30 Shuangqing Rd
    Beijing
    China
+   Email: lyxceasar@outlook.com
 
 
    Hang Shi
