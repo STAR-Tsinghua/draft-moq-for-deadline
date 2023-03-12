@@ -43,6 +43,7 @@ author:
   street: 30 Shuangqing Rd
   city: Beijing
   country: China
+  email: lyxceasar@outlook.com
 
 -
   ins: H. Shi
@@ -106,7 +107,7 @@ This document proposes the behavior of deadline-aware actions on MoQ relay nodes
 ~~~~~~
 {: #arch title="The Architecture of Deadline-aware MoQ"}
 
-{{arch}} illustrates the fundamental architecture of Deadline-aware MoQ. This architecture involves the extension of MoQ Publishers and Subscribers, which send block-like data and add 'Deadline' as a component of Metadata within the header. Relay nodes within this system are equipped with deadline-aware actions, including deadline-aware scheduling, canceling, and redundancy coding. The relay may schedule the data blocks, cancel the overdue ones, and add redundancy code to avoid re-transmission. The relays receive block-like data from the publisher, transfer between relays, make deadline-aware actions, and transmit it to the subscriber.
+{{arch}} illustrates the fundamental architecture of Deadline-aware MoQ. This architecture involves the extension of MoQ Publishers and Subscribers, which transport block-like data and add 'Deadline' as a component of Metadata within the header. Relay nodes within this system are equipped with deadline-aware actions, including deadline-aware scheduling, canceling, and redundancy coding. The relay may schedule the data blocks, cancel the overdue ones, and add redundancy code to avoid re-transmission. The relays receive block-like data from the publisher, transfer between relays, make deadline-aware actions, and transmit it to the subscriber.
 
 The main focus of this draft is the extension of MoQ relays or the 'Deadline-aware MoQ Relay.' The Deadline-aware MoQ Relay SHOULD send data in a block-like style to enable deadline-aware actions. A block is a data unit in the MoQ system, like a video frame. A block can be reliably delivered, partially delivered, or dropped depending on the application logic. A block SHOULD contain a block ID in the block's header.
 
@@ -116,7 +117,7 @@ The Deadline-aware MoQ Relay SHOULD support various relay topologies, as discuss
 
 # Deadline-aware Extension of MoQ
 
-## Metadata for Deadline-aware Actions
+## Metadata for Deadline
 
 For Deadline-aware MoQ Relay, data block metadata is required to enable deadline-aware actions. Both the endpoint and the relay SHOULD attach the following metadata to each data block when using deadline-aware actions:
 
@@ -146,7 +147,7 @@ When redundancy coding is enabled, at least two nodes SHOULD implement a pair of
 
 The first node that encodes the data with redundancy coding MUST add redundancy-related information to the metadata of the data block.
 
-# Design Considerations
+# Discussions
 
 ## Drop Notification
 
