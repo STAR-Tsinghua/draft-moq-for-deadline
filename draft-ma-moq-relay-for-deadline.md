@@ -64,7 +64,7 @@ This draft specifies the behavior of MoQ relays for delivering media before the 
 
 Media over QUIC (MoQ) is a transport system designed to provide efficient media transport. However, some use cases, such as live streaming, online meetings, and gaming, require the client to receive their media before a specific time, referred to as the 'deadline.' Exceeding the deadline results in dropped data, which can increase latency and negatively affect user experience.
 
-To address this issue, a deliver-before-deadline transport service can be provided, which is the goal of the Deadline-aware Transport Protocol (DTP) proposed in {{!I-D.draft-shi-quic-dtp-07}}. DTP leverages stream-level scheduling, active stream canceling, and redundancy coding to prioritize urgent data and prevent outdated data from blocking later data.
+To address this issue, a deliver-before-deadline transport service can be provided, which is the goal of the Deadline-aware Transport Protocol (DTP) proposed in {{!I-D.draft-shi-quic-dtp}}. DTP leverages stream-level scheduling, active stream canceling, and redundancy coding to prioritize urgent data and prevent outdated data from blocking later data.
 
 This document proposes the behavior of deadline-aware actions on MoQ relay nodes, extending the basic MoQ relay to provide deliver-before-deadline transmission. The relay design utilizes scheduling, data canceling, and redundancy coding to decrease queuing time, prevent unnecessary re-transmission of overdue data, and ultimately reduce end-to-end latency. By providing better data delivery strategies, MoQ relays with deadline-aware actions can significantly enhance overall user experience in media transport.
 
@@ -76,18 +76,18 @@ This document proposes the behavior of deadline-aware actions on MoQ relay nodes
 
 ~~~~~~
                       +===========================+
-                      :             /-------\     :
-                      :    Deadline |Block 1|     :
-                      :     -aware  |DDL:xxx|     :
-                      :   Canceling \-------/     :
+                      :             /=======\     :
+                      :    Deadline :Block 1:     :
+                      :     -aware  :DDL:xxx:     :
+                      :   Canceling \=======/     :
             /-------\ :                 ^         :
-            |DDL:xxx| :                 :         :
-            | Data  | :    +---------+  :         :
+            |Block 1| :                 :         :
+            |DDL:xxx| :    +---------+  :         :
 +---------+ \-------/ :    |Deadline |  :         :
 |Publisher|-----------:--->| -aware  |==:         :
 +---------+ /-------\ :    |  Relay  |            :
-            |DDL:yyy| :    +---------+            :
-            | Data  | :         |  /-----------\  :
+            |Block 2| :    +---------+            :
+            |DDL:yyy| :         |  /-----------\  :
             \-------/ :         |  | Block 2   |  :
                       :         |  | DDL:yyy   |  :
                       :         |  |-----------|  :
@@ -98,21 +98,21 @@ This document proposes the behavior of deadline-aware actions on MoQ relay nodes
                       :    |Deadline |            :    +----------+
                       :    | -aware  |------------:--->|Subscriber|
                       :    |  Relay  |   /-------\:    +----------+
-                      :    +---------+   |DDL:yyy|:
-                      :                  | Data  |:
+                      :    +---------+   |Block 2|:
+                      :                  |DDL:yyy|:
                       :                  \-------/:
                       +===========================+
                       Deadline-aware MoQ Relay nodes
 ~~~~~~
 {: #arch title="The Architecture of Deadline-aware MoQ"}
 
-{{arch}} illustrates the fundamental architecture of Deadline-aware MoQ. This architecture involves the extension of MoQ Publishers and Subscribers, with the 'Deadline' added as a component of Metadata within the header of transmitted data. Relay nodes within this system are equipped with Deadline-aware actions, including deadline-aware scheduling, canceling and redundancy coding. Deadline-aware MoQ Relays transfer block-like data between one another, and they are capable of reconstructing this data to its original form, as it was received by the first relay.
+{{arch}} illustrates the fundamental architecture of Deadline-aware MoQ. This architecture involves the extension of MoQ Publishers and Subscribers, which send block-like data and add 'Deadline' as a component of Metadata within the header. Relay nodes within this system are equipped with deadline-aware actions, including deadline-aware scheduling, canceling, and redundancy coding. The relay may schedule the data blocks, cancel the overdue ones, and add redundancy code to avoid re-transmission. The relays receive block-like data from the publisher, transfer between relays, make deadline-aware actions, and transmit it to the subscriber.
 
-The main focus of this draft is the extension of MoQ relays or the 'Deadline-aware MoQ Relay'. The Deadline-aware MoQ Relay SHOULD support block-based transport to enable deadline-aware actions. A block is a basic data unit in the MoQ system like a video frame. A block can be reliably delivered, partially delivered or dropped, depending on the application logic. A block SHOULD contain a block ID in the block’s header.
+The main focus of this draft is the extension of MoQ relays or the 'Deadline-aware MoQ Relay.' The Deadline-aware MoQ Relay SHOULD send data in a block-like style to enable deadline-aware actions. A block is a data unit in the MoQ system, like a video frame. A block can be reliably delivered, partially delivered, or dropped depending on the application logic. A block SHOULD contain a block ID in the block's header.
 
-Depending on the MoQ implementation, the block transmission may be mapped to different mechanisms of QUIC, such as matching a block to multiple QUIC datagrams or a single QUIC stream. Deadline-aware MoQ Relay SHOULD support various MoQ transport implementations. When the relay receives data without deadline-related information from the endpoint, it MAY choose to convert the data into block type or forward it without utilizing any deadline-aware actions.
+Depending on the MoQ implementation, the relay implementation may map the block transmission to different mechanisms of QUIC, such as matching a block to multiple QUIC datagrams or a single QUIC stream. Deadline-aware MoQ Relay SHOULD support various MoQ transport implementations. When the relay receives data without deadline-related information from the endpoint, it MAY convert the data into block type or forward it without utilizing any deadline-aware actions.
 
-The Deadline-aware MoQ Relay SHOULD support various relay topologies, as discussed in {{?I-D.draft-shi-moq-design-space-analysis-of-moq-00}}. Each relay topology may require a different MoQ architecture or implementation. Therefore, the deadline-aware actions are designed as a plugin that can be easily implemented regardless of the topology and architecture.
+The Deadline-aware MoQ Relay SHOULD support various relay topologies, as discussed in {{?I-D.draft-shi-moq-design-space-analysis-of-moq}}. Each relay topology may require a different MoQ architecture or implementation. Therefore, the deadline-aware actions should act as a plugin that relays can quickly implement regardless of the topology and architecture.
 
 # Deadline-aware Extension of MoQ
 
