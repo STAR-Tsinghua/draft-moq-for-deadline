@@ -1055,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Cui, et al.</td>
-<td class="center">Expires 12 September 2023</td>
+<td class="center">Expires 13 September 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ma-moq-relay-for-deadline-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-03-11" class="published">11 March 2023</time>
+<time datetime="2023-03-12" class="published">12 March 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-09-12">12 September 2023</time></dd>
+<dd class="expires"><time datetime="2023-09-13">13 September 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1129,7 +1129,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1233,7 +1233,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">Media over QUIC (MoQ) is a transport system designed to provide efficient media transport. However, some use cases, such as live streaming, online meetings, and gaming, require the client to receive their media before a specific time, referred to as the 'deadline.' Exceeding the deadline results in dropped data, which can increase latency and negatively affect user experience.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">To address this issue, a deliver-before-deadline transport service can be provided, which is the goal of the Deadline-aware Transport Protocol (DTP) proposed in <span>[<a href="#I-D.draft-shi-quic-dtp-07" class="cite xref">I-D.draft-shi-quic-dtp-07</a>]</span>. DTP leverages stream-level scheduling, active stream canceling, and redundancy coding to prioritize urgent data and prevent outdated data from blocking later data.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-2">To address this issue, a deliver-before-deadline transport service can be provided, which is the goal of the Deadline-aware Transport Protocol (DTP) proposed in <span>[<a href="#I-D.draft-shi-quic-dtp" class="cite xref">I-D.draft-shi-quic-dtp</a>]</span>. DTP leverages stream-level scheduling, active stream canceling, and redundancy coding to prioritize urgent data and prevent outdated data from blocking later data.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">This document proposes the behavior of deadline-aware actions on MoQ relay nodes, extending the basic MoQ relay to provide deliver-before-deadline transmission. The relay design utilizes scheduling, data canceling, and redundancy coding to decrease queuing time, prevent unnecessary re-transmission of overdue data, and ultimately reduce end-to-end latency. By providing better data delivery strategies, MoQ relays with deadline-aware actions can significantly enhance overall user experience in media transport.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1258,18 +1258,18 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <div class="alignLeft art-text artwork" id="section-3-1.1">
 <pre>
                       +===========================+
-                      :             /-------\     :
-                      :    Deadline |Block 1|     :
-                      :     -aware  |DDL:xxx|     :
-                      :   Canceling \-------/     :
+                      :             /=======\     :
+                      :    Deadline :Block 1:     :
+                      :     -aware  :DDL:xxx:     :
+                      :   Canceling \=======/     :
             /-------\ :                 ^         :
-            |DDL:xxx| :                 :         :
-            | Data  | :    +---------+  :         :
+            |Block 1| :                 :         :
+            |DDL:xxx| :    +---------+  :         :
 +---------+ \-------/ :    |Deadline |  :         :
 |Publisher|-----------:---&gt;| -aware  |==:         :
 +---------+ /-------\ :    |  Relay  |            :
-            |DDL:yyy| :    +---------+            :
-            | Data  | :         |  /-----------\  :
+            |Block 2| :    +---------+            :
+            |DDL:yyy| :         |  /-----------\  :
             \-------/ :         |  | Block 2   |  :
                       :         |  | DDL:yyy   |  :
                       :         |  |-----------|  :
@@ -1280,8 +1280,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
                       :    |Deadline |            :    +----------+
                       :    | -aware  |------------:---&gt;|Subscriber|
                       :    |  Relay  |   /-------\:    +----------+
-                      :    +---------+   |DDL:yyy|:
-                      :                  | Data  |:
+                      :    +---------+   |Block 2|:
+                      :                  |DDL:yyy|:
                       :                  \-------/:
                       +===========================+
                       Deadline-aware MoQ Relay nodes
@@ -1291,10 +1291,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#name-the-architecture-of-deadlin" class="selfRef">The Architecture of Deadline-aware MoQ</a>
         </figcaption></figure>
 </div>
-<p id="section-3-2"><a href="#arch" class="auto internal xref">Figure 1</a> illustrates the fundamental architecture of Deadline-aware MoQ. This architecture involves the extension of MoQ Publishers and Subscribers, with the 'Deadline' added as a component of Metadata within the header of transmitted data. Relay nodes within this system are equipped with Deadline-aware actions, including deadline-aware scheduling, canceling and redundancy coding. Deadline-aware MoQ Relays transfer block-like data between one another, and they are capable of reconstructing this data to its original form, as it was received by the first relay.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">The main focus of this draft is the extension of MoQ relays or the 'Deadline-aware MoQ Relay'. The Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support block-based transport to enable deadline-aware actions. A block is a basic data unit in the MoQ system like a video frame. A block can be reliably delivered, partially delivered or dropped, depending on the application logic. A block <span class="bcp14">SHOULD</span> contain a block ID in the block’s header.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">Depending on the MoQ implementation, the block transmission may be mapped to different mechanisms of QUIC, such as matching a block to multiple QUIC datagrams or a single QUIC stream. Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support various MoQ transport implementations. When the relay receives data without deadline-related information from the endpoint, it <span class="bcp14">MAY</span> choose to convert the data into block type or forward it without utilizing any deadline-aware actions.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">The Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support various relay topologies, as discussed in <span>[<a href="#I-D.draft-shi-moq-design-space-analysis-of-moq-00" class="cite xref">I-D.draft-shi-moq-design-space-analysis-of-moq-00</a>]</span>. Each relay topology may require a different MoQ architecture or implementation. Therefore, the deadline-aware actions are designed as a plugin that can be easily implemented regardless of the topology and architecture.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-2"><a href="#arch" class="auto internal xref">Figure 1</a> illustrates the fundamental architecture of Deadline-aware MoQ. This architecture involves the extension of MoQ Publishers and Subscribers, which send block-like data and add 'Deadline' as a component of Metadata within the header. Relay nodes within this system are equipped with deadline-aware actions, including deadline-aware scheduling, canceling, and redundancy coding. The relay may schedule the data blocks, cancel the overdue ones, and add redundancy code to avoid re-transmission. The relays receive block-like data from the publisher, transfer between relays, make deadline-aware actions, and transmit it to the subscriber.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">The main focus of this draft is the extension of MoQ relays or the 'Deadline-aware MoQ Relay.' The Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> send data in a block-like style to enable deadline-aware actions. A block is a data unit in the MoQ system, like a video frame. A block can be reliably delivered, partially delivered, or dropped depending on the application logic. A block <span class="bcp14">SHOULD</span> contain a block ID in the block's header.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">Depending on the MoQ implementation, the relay implementation may map the block transmission to different mechanisms of QUIC, such as matching a block to multiple QUIC datagrams or a single QUIC stream. Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support various MoQ transport implementations. When the relay receives data without deadline-related information from the endpoint, it <span class="bcp14">MAY</span> convert the data into block type or forward it without utilizing any deadline-aware actions.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">The Deadline-aware MoQ Relay <span class="bcp14">SHOULD</span> support various relay topologies, as discussed in <span>[<a href="#I-D.draft-shi-moq-design-space-analysis-of-moq" class="cite xref">I-D.draft-shi-moq-design-space-analysis-of-moq</a>]</span>. Each relay topology may require a different MoQ architecture or implementation. Therefore, the deadline-aware actions should act as a plugin that relays can quickly implement regardless of the topology and architecture.<a href="#section-3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="deadline-aware-extension-of-moq">
@@ -1405,7 +1405,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
-<dt id="I-D.draft-shi-quic-dtp-07">[I-D.draft-shi-quic-dtp-07]</dt>
+<dt id="I-D.draft-shi-quic-dtp">[I-D.draft-shi-quic-dtp]</dt>
         <dd>
 <span class="refAuthor">Cui, Y.</span>, <span class="refAuthor">Ma, C.</span>, <span class="refAuthor">Shi, H.</span>, <span class="refAuthor">Zheng, K.</span>, and <span class="refAuthor">W. Wang</span>, <span class="refTitle">"Deadline-aware Transport Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-shi-quic-dtp-07</span>, <time datetime="2023-01-26" class="refDate">26 January 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-shi-quic-dtp-07">https://datatracker.ietf.org/doc/html/draft-shi-quic-dtp-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
@@ -1424,7 +1424,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
-<dt id="I-D.draft-shi-moq-design-space-analysis-of-moq-00">[I-D.draft-shi-moq-design-space-analysis-of-moq-00]</dt>
+<dt id="I-D.draft-shi-moq-design-space-analysis-of-moq">[I-D.draft-shi-moq-design-space-analysis-of-moq]</dt>
       <dd>
 <span class="refAuthor">Shi, H.</span> and <span class="refAuthor">Y. Cui</span>, <span class="refTitle">"Design Space Analysis of MoQ"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-shi-moq-design-space-analysis-of-moq-00</span>, <time datetime="2022-10-21" class="refDate">21 October 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-shi-moq-design-space-analysis-of-moq-00">https://datatracker.ietf.org/doc/html/draft-shi-moq-design-space-analysis-of-moq-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
