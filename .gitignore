@@ -17,7 +17,7 @@
 /versioned/
 Gemfile.lock
 archive.json
-draft-mc-moq-relay-for-deadline.xml
+draft-ma-moq-relay-for-deadline.xml
 package-lock.json
 report.xml
 !requirements.txt

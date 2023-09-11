@@ -2,16 +2,16 @@
 
 This is the working area for the individual Internet-Draft, "MoQ relay for support of deadline-aware media transport".
 
-* [Editor's Copy](https://simonkorl.github.io/draft-moq-for-deadline/#go.draft-mc-moq-relay-for-deadline.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-mc-moq-relay-for-deadline)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-mc-moq-relay-for-deadline)
-* [Compare Editor's Copy to Individual Draft](https://simonkorl.github.io/draft-moq-for-deadline/#go.draft-mc-moq-relay-for-deadline.diff)
+* [Editor's Copy](https://STAR-Tsinghua.github.io/draft-moq-for-deadline/#go.draft-ma-moq-relay-for-deadline.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ma-moq-relay-for-deadline)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-ma-moq-relay-for-deadline)
+* [Compare Editor's Copy to Individual Draft](https://STAR-Tsinghua.github.io/draft-moq-for-deadline/#go.draft-ma-moq-relay-for-deadline.diff)
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/simonkorl/draft-moq-for-deadline/blob/main/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/STAR-Tsinghua/draft-moq-for-deadline/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
