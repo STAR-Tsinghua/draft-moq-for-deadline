@@ -125,7 +125,7 @@ The Deadline-aware MoQ Relay SHOULD support various relay topologies, as discuss
 
 In this draft, we utilize the Block as the fundamental unit for data transmission. A Block comprises two essential components: metadata and payload. The payload of a Block is a sequence of bytes that carries the basic unit in media transport, such as a video frame. Meanwhile, a Block's metadata encompasses deadline-related information necessary for enabling Deadline-aware Actions(see {{deadline-aware-action}}). It's worth noting that the metadata of a Block can remain unencrypted, whereas the payload of a Block SHOULD be encrypted.
 
-The Block serves as a model exclusively for data transmission within the MoQ framework. Its purpose is to support the design principles of data units within MoQ, akin to the Object in MOQT. Importantly, it is crucial that the Block model does not supersede or alter the original data transmission model.
+The Block serves as a model exclusively for data transmission within the MoQ framework. Its purpose is to support the design principles of data units within MoQ, like the Object or the Group in MOQT. Importantly, it is crucial that the Block model does not supersede or alter the original data transmission model and should adapt to different designs in MoQ.
 
 ### Metadata
 
@@ -148,13 +148,24 @@ TODO: At present, we set the priority as a relative value within a session. Howe
 
 #### Deadline
 
-Deadlines can be approached in two distinct manners: Absolute Deadline and Relative Deadline.
+Deadlines can be defined in two distinct manners: End-to-End Deadline and Hop-by-Hop Deadline.
 
-The Absolute Deadline entails the use of a unix timestamp to indicate the point in time when a block of data becomes obsolete. Alternatively, it can be expressed by combining an expected delay, such as 100ms, with the current timestamp. This approach specifies an explicit time at which the data is no longer valid.
+The End-to-End Deadline indicates the expected end-to-end delay of the application, beyond which a data block is considered obsolete. Conversely, the Hop-by-Hop Deadline represents the anticipated delay between two nodes within each hop. It defines the tolerance for delay between relay nodes but does not convey the end-to-end latency requirement.
 
-On the other hand, the Relative Deadline represents the anticipated delay between two nodes within each hop. It characterizes the tolerance for delay between relay nodes but does not convey the end-to-end latency requirement.
+~~~~~~
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Type (i)                        ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                   [Duration (i)/Timestamp (i)]              ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+~~~~~~
+{: #deadline title="A Prototype Design for the Deadline Field"}
 
-It is recommended that both Absolute Deadline and Relative Deadline implementations be incorporated into the Deadline-aware MoQ Relay. The metadata format should be designed to allow relays to discern the type of Deadline parameter being used, thereby enabling them to take appropriate actions based on the specified deadline type.
+{{deadline}} demonstrates a potential implementation of the Deadline field. The Type field specifies the function of these two fields. The last bit of Type (0x1) indicates whether the Block uses Hop-by-Hop Deadline. The least significant bit of Type (0x1) indicates whether the Block utilizes the Hop-by-Hop Deadline. The second-to-last bit of Type (0x2) indicates whether the Block employs a time duration as the maximum delay tolerance or a Unix timestamp as the expiration time for the data. A Type value of 0x4 signifies that the Block has no Deadline requirement.
+
+The Deadline-aware MoQ Relay SHOULD implement stratergies to manage both End-to-End Deadline and Hop-by-Hop Deadline requirements.
 
 ## Deadline-aware Action {#deadline-aware-action}
 
@@ -176,7 +187,7 @@ The first node that encodes the data with redundancy coding MUST add redundancy-
 
 ## Drop Notification
 
-In situations where a data block is dropped by a relay due to a missed deadline or other reasons, sending an explicit dropping message to other relays and both endpoints can be helpful in notifying them of the data loss. The dropping message may include information about the block, such as its ID and metadata. However, we are still uncertain about how to effectively notify other nodes and whether we should send drop notifications to other relays, as this could potentially lead to broadcast flooding.
+In situations where a data block is dropped by a relay due to a missed deadline or other reasons, sending an explicit dropping message to other relays and both endpoints can be helpful in notifying them of the data loss. The dropping message may include information about the block, such as its ID and metadata. However, the effective method for notifying other nodes and the decision regarding whether to send drop notifications to other relays are still pending discussion. Broadcasting drop notifications could potentially lead to network flooding and requires further consideration.
 
 ## Data Buffer
 
