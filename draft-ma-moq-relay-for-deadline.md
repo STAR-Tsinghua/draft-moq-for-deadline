@@ -152,7 +152,7 @@ Deadlines can be defined in two distinct manners: End-to-End Deadline and Hop-by
 
 The End-to-End Deadline indicates the expected end-to-end delay of the application, beyond which a data block is considered obsolete. Conversely, the Hop-by-Hop Deadline represents the anticipated delay between two nodes within each hop. It defines the tolerance for delay between relay nodes but does not convey the end-to-end latency requirement.
 
-~~~~~~
+~~~
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -160,10 +160,10 @@ The End-to-End Deadline indicates the expected end-to-end delay of the applicati
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                   [Duration (i)/Timestamp (i)]              ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-~~~~~~
-{: #deadline title="A Prototype Design for the Deadline Field"}
+~~~
+{: #ddl title="A Prototype Design for the Deadline Field"}
 
-{{deadline}} demonstrates a potential implementation of the Deadline field. The Type field specifies the function of these two fields. The last bit of Type (0x1) indicates whether the Block uses Hop-by-Hop Deadline. The least significant bit of Type (0x1) indicates whether the Block utilizes the Hop-by-Hop Deadline. The second-to-last bit of Type (0x2) indicates whether the Block employs a time duration as the maximum delay tolerance or a Unix timestamp as the expiration time for the data. A Type value of 0x4 signifies that the Block has no Deadline requirement.
+{{ddl}} demonstrates a potential implementation of the Deadline field. The Type field specifies the function of these two fields. The last bit of Type (0x1) indicates whether the Block uses Hop-by-Hop Deadline. The least significant bit of Type (0x1) indicates whether the Block utilizes the Hop-by-Hop Deadline. The second-to-last bit of Type (0x2) indicates whether the Block employs a time duration as the maximum delay tolerance or a Unix timestamp as the expiration time for the data. A Type value of 0x4 signifies that the Block has no Deadline requirement.
 
 The Deadline-aware MoQ Relay SHOULD implement stratergies to manage both End-to-End Deadline and Hop-by-Hop Deadline requirements.
 
