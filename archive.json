@@ -1,0 +1,391 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-03-09T01:26:28.160949+00:00",
+  "repo": "STAR-Tsinghua/draft-moq-for-deadline",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOJC1r4M5fuVwK",
+      "title": "CW: MoQ\u4e0d\u662f\u6240\u6709\u7684use case\u90fd\u5bf9deadline\u8981\u6c42\u4e25\u683c",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/2",
+      "state": "CLOSED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> These use cases usually require that their data is received before a certain time i.e. deadline.\r\n\r\n\u8fd9\u53e5\u8bdd\u91cc\u9762\u7684these use cases \u9700\u8981\u6539\u6210some\u3002\u4f46\u662f\u524d\u9762\u5217\u4e3e\u7684\u51e0\u4e2a\u4f3c\u4e4e\u90fd\u662freal time\u7684\uff0c\u662f\u4e0d\u662freal time\u7684\u4f20\u8f93\u5c31\u610f\u5473\u7740\u6709deadline\u3002",
+      "createdAt": "2023-03-02T02:03:40Z",
+      "updatedAt": "2023-03-08T07:28:55Z",
+      "closedAt": "2023-03-08T07:28:55Z",
+      "comments": [
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u5df2\u4fee\u6539",
+          "createdAt": "2023-03-08T07:28:55Z",
+          "updatedAt": "2023-03-08T07:28:55Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOJC1r4M5fuWDM",
+      "title": "CW\uff1aAbtract\u90e8\u5206 decrease end-to-end latency in real-time media transmission \u662f\u552f\u4e00\u7684\u76ee\u6807\u6216\u8005\u597d\u5904\u4e48\uff1f",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/3",
+      "state": "CLOSED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-02T02:05:00Z",
+      "updatedAt": "2023-03-08T07:29:05Z",
+      "closedAt": "2023-03-08T07:29:05Z",
+      "comments": [
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u5df2\u4fee\u6539",
+          "createdAt": "2023-03-08T07:29:05Z",
+          "updatedAt": "2023-03-08T07:29:05Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOJC1r4M5fuWQi",
+      "title": "CW\uff1aDeadline-aware actions\u662f\u5426\u9700\u8981\u4ecb\u7ecd\u4e00\u4e0b\uff0c\u65b9\u4fbf\u6ca1\u6709\u770bdtp draft\u7684\u4eba\u7406\u89e3\u3002",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/4",
+      "state": "CLOSED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-02T02:05:54Z",
+      "updatedAt": "2023-03-08T07:29:17Z",
+      "closedAt": "2023-03-08T07:29:16Z",
+      "comments": [
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u5df2\u4fee\u6539",
+          "createdAt": "2023-03-08T07:29:16Z",
+          "updatedAt": "2023-03-08T07:29:16Z"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOJC1r4M5fuWge",
+      "title": "CW\uff1aDesign requirement\u7684\u5185\u5bb9\u6bd4\u8f83\u591a\uff0c\u751a\u81f3\u5305\u542b\u4e86metadata\u7684\u8bbe\u8ba1\uff0c\u662f\u4e0d\u662f\u6709\u66f4\u597d\u7684\u540d\u5b57",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/5",
+      "state": "CLOSED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-02T02:07:01Z",
+      "updatedAt": "2023-03-08T07:29:26Z",
+      "closedAt": "2023-03-08T07:29:25Z",
+      "comments": [
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u5df2\u4fee\u6539",
+          "createdAt": "2023-03-08T07:29:25Z",
+          "updatedAt": "2023-03-08T07:29:25Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOJC1r4M5fuWl6",
+      "title": "CW\uff1aTopology \u652f\u6301\uff0c\u9700\u8981\u5217\u4e3e\u54ea\u4e9b\u53ef\u80fd\u7684topology",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/6",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-02T02:07:27Z",
+      "updatedAt": "2023-03-08T07:31:10Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "VMatrix1900",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "\u6211\u540c\u610f\u3002\r\n\r\n> Deadline-aware MoQ Relay SHOULD support multiple relay topologies like those mentioned in {{?I-D.draft-shi-moq-design-space-analysis-of-moq-00}}. The topology of the Deadline-aware MoQ Relay SHOULD NOT be specific.\r\n\r\n\u8fd9\u4e2a\u7684\u7b2c\u4e8c\u53e5\u8bdd\u53ef\u4ee5\u5220\u6389\uff0c\u6362\u6210topology example\u3002",
+          "createdAt": "2023-03-02T02:25:22Z",
+          "updatedAt": "2023-03-02T02:25:22Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOJC1r4M5fuWuo",
+      "title": "CW\uff1aBlock based transport\uff0cblock\u7684\u6982\u5ff5\u5728\u5176\u4ed6MoQ\u7684\u6587\u7a3f\u4e2d\u6ca1\u6709\uff0c\u8fd9\u4e2a\u662f\u5bf9MoQ\u7684\u9700\u6c42\u8fd8\u662f\u5bf9DTP relay\u7684\u9700\u6c42\uff1f",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/7",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-02T02:08:16Z",
+      "updatedAt": "2023-03-08T07:32:19Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u8fd9\u4e2a\u5e94\u8be5\u662f\u4ec5\u5bf9\u8fd9\u4e2a DTP relay \u7684\u9700\u6c42\u3002\u5728\u6587\u4e2d\u7a0d\u5fae\u589e\u52a0\u4e86\u4e00\u4e9b\u8bf4\u660e\u3002",
+          "createdAt": "2023-03-08T07:32:18Z",
+          "updatedAt": "2023-03-08T07:32:18Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOJC1r4M5fuW29",
+      "title": "CW\uff1aMetadata\uff0cdeadline\u548cstart\u7684\u987a\u5e8f\u7f6e\u6362\u4e00\u4e0b\uff0cdeadline\u5982\u679c\u662flatency\u7684\u8bdd\uff0c\u662f100ms\u8fd8\u662f\u7edd\u5bf9\u65f6\u523b\uff1f",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/8",
+      "state": "CLOSED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-02T02:09:00Z",
+      "updatedAt": "2023-03-08T07:33:23Z",
+      "closedAt": "2023-03-08T07:33:23Z",
+      "comments": [
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u76ee\u524d\u90fd\u4fee\u6539\u4e3a\u7edd\u5bf9\u65f6\u523b",
+          "createdAt": "2023-03-08T07:33:23Z",
+          "updatedAt": "2023-03-08T07:33:23Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOJC1r4M5fuW73",
+      "title": "CW\uff1aclock synchronization\uff0c\u662f\u5426\u9700\u8981\u6307\u51fa\u5982\u679c\u4e0d\u652f\u6301\u65f6\u949f\u540c\u6b65\u5982\u4f55\u5904\u7406\u76f8\u5173metadata",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/9",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-02T02:09:28Z",
+      "updatedAt": "2023-03-02T02:09:28Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOJC1r4M5fuXSN",
+      "title": "CW\uff1adeadline-aware scheduling and cancelling",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/10",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> Deadline-aware MoQ Relay can use the information of cached data, block priority, deadline, and others to make stream-level scheduling.\r\n\r\ncached data\u662f\u4ec0\u4e48\uff0cothers\u53ef\u80fd\u6709\u54ea\u4e9b\uff0cDTP\u8c03\u5ea6\u6240\u9700\u8981\u7684information\u8d85\u8fc7\u4e4b\u524d\u7684metadata\u5185\u5bb9\u4e86\u4e48\uff1fblock\u7684\u8c03\u5ea6\u548cstream-level\u7684\u8c03\u5ea6\u4ec0\u4e48\u5173\u7cfb\uff1f",
+      "createdAt": "2023-03-02T02:11:34Z",
+      "updatedAt": "2023-03-02T02:11:34Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOJC1r4M5fuXdt",
+      "title": "CW\uff1aIn some cases \u4e0d\u660e\u786e",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/11",
+      "state": "CLOSED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> In some cases where the data can be partially accepted, Deadline-aware MoQ Relay MAY cancel some blocks. The relays MAY inform the endpoints and other relays about the drop of these data blocks.\r\n\r\n\u8fd9\u91cc\u7684some cases \u5177\u4f53\u662f\u4ec0\u4e48\uff1f\u5982\u679cdeadline \u8d85\u4e86\uff0c\u662f\u786e\u5b9a\u76f4\u63a5drop\uff0c\u8fd8\u662f\u8981\u770b\u573a\u666f\uff1f\u5982\u679c\u770b\u573a\u666f\uff0crelay\u5982\u4f55\u5224\u65ad\u3002",
+      "createdAt": "2023-03-02T02:12:41Z",
+      "updatedAt": "2023-03-08T07:30:40Z",
+      "closedAt": "2023-03-08T07:30:40Z",
+      "comments": [
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u5df2\u4fee\u6539",
+          "createdAt": "2023-03-08T07:30:40Z",
+          "updatedAt": "2023-03-08T07:30:40Z"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "I_kwDOJC1r4M5fuX6A",
+      "title": "passing deadline related information\u4e0d\u7b97action",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/12",
+      "state": "CLOSED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> Deadline-aware actions, such as passing deadline-related information from the endpoint to the relay and deadline-aware scheduling on relay nodes will increase the timeliness of data and decrease the cost of bandwidth. \r\n\r\npassing deadline-related information \u4e0d\u80fd\u7b97\u662factions\uff0c\u662faction\u53d1\u751f\u7684\u524d\u7f6e\u6761\u4ef6\uff0c\u6211\u7406\u89e3actions\u53ea\u6709\u4e24\u4e2a\uff1adeadline aware scheduling\u4ee5\u53caFEC",
+      "createdAt": "2023-03-02T02:15:33Z",
+      "updatedAt": "2023-03-08T07:28:33Z",
+      "closedAt": "2023-03-08T07:28:32Z",
+      "comments": [
+        {
+          "author": "starryskying",
+          "authorAssociation": "NONE",
+          "body": "\u540c\u610f\u3002\u8fd9\u90e8\u5206\u662f\u5426\u53ef\u4ee5\u63cf\u8ff0\u4e00\u4e0bDeadline-aware\u7684\u6574\u4f53\u6846\u67b6\u3002such as\u4e3e\u4f8b\u7684\u65b9\u5f0f\u96be\u4ee5\u5efa\u7acb\u8d77\u5b8c\u6574\u7684\u6982\u5ff5\u3002",
+          "createdAt": "2023-03-02T06:23:05Z",
+          "updatedAt": "2023-03-02T06:23:05Z"
+        },
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u5df2\u4fee\u6539",
+          "createdAt": "2023-03-08T07:28:32Z",
+          "updatedAt": "2023-03-08T07:28:32Z"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "I_kwDOJC1r4M5fuYw2",
+      "title": "\u4e0d\u540cclient\u7684deadline\u9700\u8981\u6df7\u5408\u5904\u7406\u4e48\uff1f",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/issues/13",
+      "state": "OPEN",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": ">  Deadline-aware scheduling can also provide a better overall user experience while serving clients with different delay requirements. For example, a relay may simultaneously forward a simple live stream and an online meeting stream. The live stream may tolerate a 1s delay while the online meeting only accepts a 100ms delay. It may be a good idea to forward the meeting stream first.\r\n\r\nDTP\u4e4b\u524d\u90fd\u662f\u5728\u540c\u4e00\u4e2asession\u91cc\u9762\u6839\u636edeadline\u548c\u4f18\u5148\u7ea7\u51b3\u5b9a\u5148\u53d1\u8c01\u518d\u53d1\u8c01\uff0c\u4e0d\u540c\u7684session\u4e4b\u95f4\u662f\u5e73\u7b49\u7684\uff0c\u8fd9\u53e5\u8bdd\u4f3c\u4e4e\u9690\u542b\u4e86\u6240\u6709session\u6309\u7167deadline\u6392\u5e8f\uff0c\u5982\u4f55\u5904\u7406\u516c\u5e73\u6027\u95ee\u9898\uff1f",
+      "createdAt": "2023-03-02T02:20:49Z",
+      "updatedAt": "2023-03-08T08:51:26Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "simonkorl",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u6211\u4eec\u53ef\u4ee5\u5148\u628a\u4f18\u5148\u7ea7\u9650\u5236\u5728\u540c\u4e00\u4e2a session \u5185\uff0c\u6574\u4f53\u7684\u4f18\u5148\u7ea7\u53ef\u80fd\u9700\u8981\u590d\u6742\u7684\u8c03\u5ea6\u7b97\u6cd5",
+          "createdAt": "2023-03-08T08:51:25Z",
+          "updatedAt": "2023-03-08T08:51:25Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOJC1r4M5K0kpP",
+      "title": "Simple modification.",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/pull/1",
+      "state": "MERGED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-02-27T11:17:40Z",
+      "updatedAt": "2023-02-27T11:20:05Z",
+      "baseRepository": "STAR-Tsinghua/draft-moq-for-deadline",
+      "baseRefName": "main",
+      "baseRefOid": "a3278554ac4e8af30f5b124e8a3f3eea1436f35e",
+      "headRepository": "VMatrix1900/draft-moq-for-deadline",
+      "headRefName": "patch-1",
+      "headRefOid": "7375991b5e236d4827cea79161e0bc4d8bef8ed3",
+      "closedAt": "2023-02-27T11:20:05Z",
+      "mergedAt": "2023-02-27T11:20:05Z",
+      "mergedBy": "simonkorl",
+      "mergeCommit": {
+        "oid": "ab9e4d0ab3ca439aa48cf0d67def8400ab772d37"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDOJC1r4M5LFiS4",
+      "title": "Design requirement\u5408\u5e76\u524d\u4e24\u4e2a\u7ae0\u8282",
+      "url": "https://github.com/STAR-Tsinghua/draft-moq-for-deadline/pull/14",
+      "state": "MERGED",
+      "author": "VMatrix1900",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-02T02:32:05Z",
+      "updatedAt": "2023-03-06T07:02:38Z",
+      "baseRepository": "STAR-Tsinghua/draft-moq-for-deadline",
+      "baseRefName": "main",
+      "baseRefOid": "a739b5465b38453df9c605c76df1fb5af174bee2",
+      "headRepository": "VMatrix1900/draft-moq-for-deadline",
+      "headRefName": "patch-2",
+      "headRefOid": "5b56d47d3439ac4b397c37ed507a2ed3bd747d44",
+      "closedAt": "2023-03-06T07:02:37Z",
+      "mergedAt": "2023-03-06T07:02:37Z",
+      "mergedBy": "simonkorl",
+      "mergeCommit": {
+        "oid": "79d2aa34a99c001325d51f4f1e8a7c084b2888ab"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
