@@ -148,7 +148,7 @@ TODO: At present, we set the priority as a relative value within a session. Howe
 
 #### Deadline
 
-Deadlines can be approached in two distinct manners: Absolute Deadline and Relative Deadline. 
+Deadlines can be approached in two distinct manners: Absolute Deadline and Relative Deadline.
 
 The Absolute Deadline entails the use of a unix timestamp to indicate the point in time when a block of data becomes obsolete. Alternatively, it can be expressed by combining an expected delay, such as 100ms, with the current timestamp. This approach specifies an explicit time at which the data is no longer valid.
 
