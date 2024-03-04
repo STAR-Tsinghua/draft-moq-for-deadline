@@ -71,7 +71,7 @@ Media over QUIC (MoQ) is a transport system designed to provide efficient media 
 
 To address this issue, a deliver-before-deadline transport service can be provided, which is the goal of the Deadline-aware Transport Protocol (DTP) proposed in {{!I-D.draft-shi-quic-dtp}}. DTP leverages stream-level scheduling, active stream canceling, and redundancy coding to prioritize urgent data and prevent outdated data from blocking later data.
 
-This document proposes the behavior of deadline-aware actions on MoQ relay nodes, extending the basic MoQ relay to provide deliver-before-deadline transmission. The relay design utilizes scheduling, data canceling, and redundancy coding to decrease queuing time, prevent unnecessary re-transmission of overdue data, and ultimately reduce end-to-end latency. By providing better data delivery strategies, MoQ relays with deadline-aware actions can significantly enhance overall user experience in media transport.
+This document proposes the behavior of deadline-aware actions on MoQ relay nodes, extending the basic MoQ relay to provide deliver-before-deadline transmission. The relay design utilizes data scheduling, data canceling, and redundancy coding to decrease queuing time, prevent unnecessary re-transmission of overdue data, and ultimately reduce end-to-end latency. By providing better data delivery strategies, MoQ relays with deadline-aware actions can significantly enhance overall user experience in media transport.
 
 # Conventions and Definitions
 
@@ -113,9 +113,9 @@ This document proposes the behavior of deadline-aware actions on MoQ relay nodes
 
 {{arch}} illustrates the fundamental architecture of Deadline-aware MoQ. This architecture involves the extension of MoQ Publishers and Subscribers, which transport block-like data and add 'Deadline' as a component of Metadata within the header. Relay nodes within this system are equipped with deadline-aware actions, including deadline-aware scheduling, canceling, and redundancy coding. The relay may schedule the data blocks, cancel the overdue ones, and add redundancy code to avoid re-transmission. The relays receive block-like data from the publisher, transfer between relays, make deadline-aware actions, and transmit it to the subscriber.
 
-The main focus of this draft is the extension of MoQ relays or the 'Deadline-aware MoQ Relay.' The Deadline-aware MoQ Relay SHOULD send data in a block-like style to enable deadline-aware actions. A Block is a basic data unit in the MoQ system, like the Object in {{MOQT}}. A Block SHOULD contain, at a minimum, a Block ID field in the its header to distinguish it from others.
+The main focus of this draft is proposing an extension of MoQ relays, the 'Deadline-aware MoQ Relay.' The Deadline-aware MoQ Relay SHOULD send data in a block-like style to enable deadline-aware actions. A Block is a basic data unit in the MoQ system, like the Object in {{MOQT}}. A Block SHOULD contain, at a minimum, a Block ID field in the its header to distinguish it from others.
 
-Depending on the MoQ implementation, the relay implementation may map the block transmission to different mechanisms of {{QUIC}}, such as matching a Block to multiple QUIC datagrams or a single QUIC stream. Deadline-aware MoQ Relay SHOULD support various MoQ transport implementations. When the relay receives data without any deadline-related information from the endpoint, it SHOULD forward it without utilizing any deadline-aware actions.
+Depending on the implementation of MoQ , the implementation of MoQ relay may map the block transmission to different mechanisms of {{QUIC}}, such as matching a Block to multiple QUIC datagrams or a single QUIC stream. Deadline-aware MoQ Relay SHOULD support various MoQ transport implementations. When the relay receives data without any deadline-related information from the endpoint, it SHOULD forward it without utilizing any deadline-aware actions.
 
 The Deadline-aware MoQ Relay SHOULD support various relay topologies, as discussed in {{?I-D.draft-shi-moq-design-space-analysis-of-moq}}. Each relay topology may require a different MoQ architecture or implementation. Therefore, the deadline-aware actions should act as a plugin that relays can quickly implement regardless of the topology and architecture.
 
@@ -123,9 +123,9 @@ The Deadline-aware MoQ Relay SHOULD support various relay topologies, as discuss
 
 ## Object Model: Block
 
-In this draft, we utilize the Block as the fundamental unit for data transmission. A Block comprises two essential components: metadata and payload. The payload of a Block is a sequence of bytes that carries the basic unit in media transport, such as a video frame. Meanwhile, a Block's metadata encompasses deadline-related information necessary for enabling Deadline-aware Actions(see {{deadline-aware-action}}). It's worth noting that the metadata of a Block can remain unencrypted, whereas the payload of a Block SHOULD be encrypted.
+In this draft, we utilize the Block as the fundamental unit for data transmission. A Block comprises two essential components: the metadata and the payload. The payload of a Block is a sequence of data bytes that carries the basic unit in media transport, such as a video frame. Meanwhile, a Block's metadata encompasses deadline-related information, which is necessary for enabling Deadline-aware Actions(see {{deadline-aware-action}}). It's worth noting that the metadata of a Block can remain unencrypted, whereas the payload of a Block SHOULD be encrypted.
 
-The Block serves as a model exclusively for data transmission within the MoQ framework. Its purpose is to support the design principles of data units within MoQ, like the Object or the Group in MOQT. Importantly, it is crucial that the Block model does not supersede or alter the original data transmission model and should adapt to different designs in MoQ.
+The Block serves as a model exclusively for data transmission within the MoQ framework. Its purpose is to support the design principles of data units within MoQ, like the Object or the Group in {{MOQT}}. Importantly, it is crucial that the Block model does not supersede or alter the original data transmission model and should adapt to different designs in MoQ.
 
 ### Metadata
 
@@ -144,7 +144,7 @@ e.x. The specific methodology for encapsulating metadata needs to wait until the
 
 #### Proirity
 
-TODO: At present, we set the priority as a relative value within a session. However, the determination of object priority in MOQT remains a subject of ongoing discussion. We are contemplating deferring this aspect until the Working Group reaches a consensus on the matter.
+TODO: At present, we set the priority as a relative value within a session. However, the priority in MOQT refers to a relative sending order in a group. We are considering postponing this aspect until we devise a solution for implementing MOQT-defined priority ordering on Deadline-aware MoQ Relays.
 
 #### Deadline
 
